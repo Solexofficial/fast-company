@@ -11,10 +11,19 @@ const App = () => {
 	};
 
 	const handleToggleBookMark = userId => {
-		const newUsers = [...users];
-		const idx = newUsers.findIndex(user => user._id === userId);
-		newUsers[idx].status = !newUsers[idx].status;
-		setUsers(newUsers);
+		// const newUsers = [...users];
+		// const idx = newUsers.findIndex(user => user._id === userId);
+		// newUsers[idx].status = !newUsers[idx].status;
+		// setUsers(newUsers);
+		setUsers(
+			users.filter(user => {
+				if (user._id === userId) {
+					user.status = !user.status;
+					return user;
+				}
+				return user;
+			})
+		);
 	};
 
 	return (
