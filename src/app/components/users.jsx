@@ -34,8 +34,6 @@ const Users = ({ users: allUsers, onDelete, onToggleBookMark }) => {
     setSelectedProf();
   };
 
-  console.log('AllUsers', allUsers);
-
   const filteredUsers = selectedProf
     ? allUsers.filter((user) => JSON.stringify(user.profession) === JSON.stringify(selectedProf))
     : allUsers;
