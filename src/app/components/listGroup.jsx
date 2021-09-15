@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const ListGroup = ({ items, valueProperty, contentProperty, onItemSelect, selectedItem }) => {
-  return (
-    <>
+  if (!Array.isArray(items)) {
+    return (
       <ul className="list-group">
         {Object.keys(items).map((item) => (
           <li
@@ -15,7 +15,20 @@ const ListGroup = ({ items, valueProperty, contentProperty, onItemSelect, select
           </li>
         ))}
       </ul>
-    </>
+    );
+  }
+  return (
+    <ul className="list-group">
+      {items.map((item) => (
+        <li
+          key={item[valueProperty]}
+          role="button"
+          className={'list-group-item' + (item === selectedItem ? ' active' : '')}
+          onClick={() => onItemSelect(item)}>
+          {item[contentProperty]}
+        </li>
+      ))}
+    </ul>
   );
 };
 
