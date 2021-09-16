@@ -16,7 +16,7 @@ const App = () => {
     setUsers(
       users.filter((user) => {
         if (user._id === userId) {
-          user.status = !user.status;
+          user.bookmark = !user.bookmark;
           return user;
         }
         return user;
