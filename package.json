@@ -1,5 +1,5 @@
 {
-  "name": "fast-company",
+  "name": "name",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -46,5 +46,9 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0",
     "eslint-plugin-react": "^7.25.1"
-  }
+  },
+  "main": "index.js",
+  "repository": "https://github.com/Solexofficial/fast-company.git",
+  "author": "Mark Pokrovsky <solexofficial@yandex.ru>",
+  "license": "MIT"
 }
