@@ -16,7 +16,7 @@ const NavBar = () => {
       </li>
       <li className="nav-item">
         <Link to="/users" className="nav-link">
-          User
+          Users
         </Link>
       </li>
     </ul>

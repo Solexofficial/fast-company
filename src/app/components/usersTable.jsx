@@ -1,12 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import UserPage from './userPage';
 import Table from './table';
 import BookMark from './bookmark';
 import QualitiesList from './qualitiesList';
 
-const UserTable = ({ users, onSort, selectedSort, onToggleBookMark, onDelete, ...rest }) => {
+const UserTable = ({ users, onSort, selectedSort, onToggleBookMark, onDelete }) => {
   const columns = {
-    name: { path: 'name', name: 'Имя' },
+    name: {
+      path: 'name',
+      name: 'Имя',
+      component: (user) => <UserPage user={user} />
+    },
     qualities: { name: 'Качества', component: (user) => <QualitiesList qualities={user.qualities} /> },
     professions: { path: 'profession.name', name: 'Профессия' },
     completedMeetings: { path: 'completedMeetings', name: 'Встретился, раз' },
