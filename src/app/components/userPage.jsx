@@ -1,18 +1,19 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useHistory } from 'react-router';
-// import API from '../api';
+import React, { useState, useEffect } from 'react';
+import API from '../api';
+import User from '../components/user';
 
-const userPage = ({ user }) => {
-  const history = useHistory();
-  console.log(history);
-  // const userId = API.users.getById(id);
-  // console.log(userId);
-  return (
-    <>
-      <Link to={`/${user._id}`}>{user.name}</Link>
-    </>
-  );
+const userPage = ({ id }) => {
+  const [currentUser, setCurrentUser] = useState(null);
+  useEffect(() => {
+    if (!currentUser) {
+      API.users.getById(id).then((data) => setCurrentUser(data));
+    }
+  }, [currentUser]);
+
+  if (currentUser) {
+    return <User {...currentUser} />;
+  }
+  return <h2>Loading...</h2>;
 };
 
 export default userPage;
