@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { paginate } from '../utils/paginate';
-import UsersTable from './usersTable';
-import SearchStatus from './searchStatus';
-import Pagination from './pagination';
-import ListGroup from './listGroup';
+import UsersTable from '../components/usersTable';
+import SearchStatus from '../components/searchStatus';
+import Pagination from '../components/pagination';
+import ListGroup from '../components/listGroup';
 import api from '../api';
 import _ from 'lodash';
 

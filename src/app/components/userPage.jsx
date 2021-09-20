@@ -3,7 +3,17 @@ import PropTypes from 'prop-types';
 import BookMark from './bookmark';
 import Qualitie from './qualitie';
 
-const User = ({ name, qualities, profession, completedMeetings, rate, _id, onDelete, onToggleBookMark, status }) => {
+const UserPage = ({
+  name,
+  qualities,
+  profession,
+  completedMeetings,
+  rate,
+  _id,
+  onDelete,
+  onToggleBookMark,
+  status
+}) => {
   return (
     <tr>
       <th>{name}</th>
@@ -27,7 +37,7 @@ const User = ({ name, qualities, profession, completedMeetings, rate, _id, onDel
   );
 };
 
-User.propTypes = {
+UserPage.propTypes = {
   name: PropTypes.string,
   qualities: PropTypes.array,
   profession: PropTypes.object,
@@ -39,4 +49,4 @@ User.propTypes = {
   status: PropTypes.bool
 };
 
-export default User;
+export default UserPage;
