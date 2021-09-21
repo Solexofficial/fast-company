@@ -1,29 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import BookMark from './bookmark';
-import Qualitie from './qualitie';
+import QualitiesList from './qualitiesList';
+import { useHistory } from 'react-router';
 
-const User = ({ name, qualities, profession, completedMeetings, rate, _id, onDelete, onToggleBookMark, status }) => {
+const User = ({ name, qualities, profession, completedMeetings, rate, _id, onDelete }) => {
+  const history = useHistory();
+
+  const handleSave = () => {
+    history.replace('/users');
+  };
+
   return (
-    <tr>
-      <th>{name}</th>
-      <td>
-        {qualities.map((item) => (
-          <Qualitie key={item._id} {...item} />
-        ))}
-      </td>
-      <td>{profession.name}</td>
-      <td>{completedMeetings}</td>
-      <td>{rate}/5</td>
-      <td>
-        <BookMark id={_id} onToggleBookMark={onToggleBookMark} status={status} />
-      </td>
-      <td>
-        <button className="btn btn-danger" onClick={() => onDelete(_id)}>
-          Delete
+    <div className="d-flex flex-column m-3">
+      <h1 className="mb-3">{name}</h1>
+      <h2>{`Профессия: ${profession.name}`}</h2>
+      <ul>
+        <QualitiesList qualities={qualities} />
+      </ul>
+      <span>{`completedMeetings: ${completedMeetings}`}</span>
+      <h3 className="my-3">{`Rate: ${rate}/5`}</h3>
+      <div>
+        <button className="btn btn-success" onClick={() => handleSave()}>
+          Все пользователи
         </button>
-      </td>
-    </tr>
+      </div>
+    </div>
   );
 };
 

@@ -1,44 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { paginate } from '../utils/paginate';
-import UsersTable from './usersTable';
-import SearchStatus from './searchStatus';
-import Pagination from './pagination';
-import ListGroup from './listGroup';
+import UsersTable from '../components/usersTable';
+import SearchStatus from '../components/searchStatus';
+import Pagination from '../components/pagination';
+import ListGroup from '../components/listGroup';
 import api from '../api';
 import _ from 'lodash';
 
-const Users = () => {
+const UsersList = ({ users, onDelete, onToggleBookMark }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [professions, setProfessions] = useState();
   const [selectedProf, setSelectedProf] = useState();
   const [sortBy, setSortBy] = useState({ path: 'name', order: 'asc' });
   const pageSize = 8;
 
-  const [users, setUsers] = useState();
   useEffect(() => {
-    api.users.fetchAll().then((data) => setUsers(data));
-  }, []);
-
-  const handleDelete = (userId) => {
-    return setUsers(users.filter((user) => user._id !== userId));
-  };
-
-  const handleToggleBookMark = (userId) => {
-    setUsers(
-      users.filter((user) => {
-        if (user._id === userId) {
-          user.bookmark = !user.bookmark;
-          return user;
-        }
-        return user;
-      })
-    );
-  };
-
-  useEffect(() => {
-    api.professions.fetchAll().then((data) => setProfessions(data));
-  }, []);
+    if (!professions) {
+      api.professions.fetchAll().then((data) => setProfessions(data));
+    }
+  }, [professions]);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -86,8 +67,8 @@ const Users = () => {
               users={usersCrop}
               onSort={handleSort}
               selectedSort={sortBy}
-              onToggleBookMark={handleToggleBookMark}
-              onDelete={handleDelete}
+              onToggleBookMark={onToggleBookMark}
+              onDelete={onDelete}
             />
           )}
           <div className="d-flex justify-content-center">
@@ -105,9 +86,9 @@ const Users = () => {
   return <h1 className="d-flex justify-content-center align-items-center">Loading...</h1>;
 };
 
-Users.propTypes = {
+UsersList.propTypes = {
   users: PropTypes.array,
   onDelete: PropTypes.func,
   onToggleBookMark: PropTypes.func
 };
-export default Users;
+export default UsersList;
