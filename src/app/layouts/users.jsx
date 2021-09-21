@@ -30,7 +30,7 @@ const Users = () => {
   };
   // eslint-disable-next-line multiline-ternary
   return userId ? (
-    <UserPage id={userId} />
+    <UserPage userId={userId} />
   ) : (
     <UsersList users={users} onDelete={handleDelete} onToggleBookMark={handleToggleBookMark} />
   );

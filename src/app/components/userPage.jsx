@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import API from '../api';
 import User from '../components/user';
 
-const userPage = ({ id }) => {
+const UserPage = ({ userId }) => {
   const [currentUser, setCurrentUser] = useState(null);
   useEffect(() => {
     if (!currentUser) {
-      API.users.getById(id).then((data) => setCurrentUser(data));
+      API.users.getById(userId).then((data) => setCurrentUser(data));
     }
   }, [currentUser]);
 
@@ -16,4 +17,8 @@ const userPage = ({ id }) => {
   return <h2>Loading...</h2>;
 };
 
-export default userPage;
+UserPage.propTypes = {
+  userId: PropTypes.string
+};
+
+export default UserPage;
