@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import QualitiesList from './qualitiesList';
 import { useHistory } from 'react-router';
 
-const User = ({ name, qualities, profession, completedMeetings, rate, _id, onDelete }) => {
+const User = ({ name, qualities, profession, completedMeetings, rate }) => {
   const history = useHistory();
 
   const handleSave = () => {
