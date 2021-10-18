@@ -8,8 +8,13 @@ const Login = () => {
     setData((prevState) => ({ ...prevState, [target.name]: target.value }));
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(data);
+  };
+
   return (
-    <form action="">
+    <form onSubmit={handleSubmit}>
       <TextField
         label="email"
         type="text"
@@ -26,6 +31,8 @@ const Login = () => {
         value={data.password}
         onChange={handleChange}
       />
+
+      <button type="submit">Submit</button>
 
       {/* <div>
         <div>
