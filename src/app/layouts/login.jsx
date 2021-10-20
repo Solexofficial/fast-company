@@ -51,41 +51,40 @@ const Login = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <TextField
-        label="email"
-        type="text"
-        name="email"
-        placeholder="Введите ваш e-mail"
-        value={data.email}
-        onChange={handleChange}
-        error={errors.email}
-      />
-      <TextField
-        label="password"
-        type="password"
-        name="password"
-        placeholder="Введите пароль"
-        value={data.password}
-        onChange={handleChange}
-        error={errors.password}
-      />
+    <div className="container mt-5">
+      <div className="row">
+        <div className="col-md-6 offset-md-3 shadow p-4">
+          <h3 className="mb-4">Login</h3>
+          <form onSubmit={handleSubmit}>
+            <TextField
+              label="email"
+              type="text"
+              name="email"
+              placeholder="Введите ваш e-mail"
+              value={data.email}
+              onChange={handleChange}
+              error={errors.email}
+            />
+            <TextField
+              label="password"
+              type="password"
+              name="password"
+              placeholder="Введите пароль"
+              value={data.password}
+              onChange={handleChange}
+              error={errors.password}
+            />
 
-      <button type="submit" disabled={!isValid}>
-        Submit
-      </button>
-
-      {/* <div>
-        <div>
-          <label htmlFor="radio1">radio 1</label>
-          <input type="radio" id="radio1" name="radio" />
+            <button
+              className="btn btn-primary w-100 mx-auto"
+              type="submit"
+              disabled={!isValid}>
+              Submit
+            </button>
+          </form>
         </div>
-        <div>
-          <label htmlFor="radio2">radio 2</label>
-          <input type="radio" id="radio2" name="radio" />
-        </div>
-      </div> */}
-    </form>
+      </div>
+    </div>
   );
 };
 
