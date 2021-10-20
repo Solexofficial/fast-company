@@ -5,7 +5,6 @@ import { validator } from '../utils/validator';
 const Login = () => {
   const [data, setData] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({});
-  console.log(errors);
 
   const validate = () => {
     const errors = validator(data, validatorConfig);
@@ -14,10 +13,16 @@ const Login = () => {
   };
   const validatorConfig = {
     email: {
-      isRequired: { message: 'Электронная почта обязательна для заполнения' }
+      isRequired: { message: 'Электронная почта обязательна для заполнения' },
+      isEmail: {
+        message: 'email введен некорректно'
+      }
     },
     password: {
-      isRequired: { message: 'пароль обязателен для заполнения' }
+      isRequired: { message: 'пароль обязателен для заполнения' },
+      isCapitalSymbol: {
+        message: 'Пароль должен содержать хотя бы одну заглавную букву'
+      }
     }
   };
   useEffect(() => {

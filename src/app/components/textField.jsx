@@ -19,6 +19,7 @@ const TextField = ({
         value={value}
         placeholder={placeholder}
         onChange={onChange}
+        type={type}
       />
       {error && <p>{error}</p>}
     </div>
