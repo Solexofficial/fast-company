@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { paginate } from '../utils/paginate';
@@ -7,14 +8,15 @@ import Pagination from '../components/pagination';
 import ListGroup from '../components/listGroup';
 import api from '../api';
 import _ from 'lodash';
+import SearchBar from './searchBar';
 
 const UsersList = ({ users, onDelete, onToggleBookMark }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [professions, setProfessions] = useState();
   const [selectedProf, setSelectedProf] = useState();
   const [sortBy, setSortBy] = useState({ path: 'name', order: 'asc' });
+  const [searchQuery, setSearchQuery] = useState();
   const pageSize = 8;
-
   useEffect(() => {
     if (!professions) {
       api.professions.fetchAll().then((data) => setProfessions(data));
@@ -26,6 +28,7 @@ const UsersList = ({ users, onDelete, onToggleBookMark }) => {
   }, [selectedProf]);
 
   const handleProfessionSelect = (item) => {
+    setSearchQuery('');
     setSelectedProf(item);
   };
 
@@ -37,12 +40,26 @@ const UsersList = ({ users, onDelete, onToggleBookMark }) => {
     setSortBy(item);
   };
 
-  if (users) {
-    const clearFilter = () => {
-      setSelectedProf();
-    };
+  const handleSearch = (data, config) => {
+    setSelectedProf();
+    setSearchQuery(event.target.value);
 
-    const filteredUsers = selectedProf
+    console.log(
+      data.filter((el) =>
+        el?.[config.searchBy].toLowerCase().includes(event.target.value.toLowerCase())
+      )
+    );
+  };
+
+  const clearFilter = () => {
+    setSelectedProf();
+    setSearchQuery();
+  };
+
+  if (users) {
+    const filteredUsers = searchQuery
+      ? users.filter((user) => user.name.toLowerCase().includes(searchQuery.toLowerCase()))
+      : selectedProf
       ? users.filter((user) => JSON.stringify(user.profession) === JSON.stringify(selectedProf))
       : users;
 
@@ -54,7 +71,11 @@ const UsersList = ({ users, onDelete, onToggleBookMark }) => {
       <div className="d-flex">
         {professions && (
           <div className="d-flex flex-column flex-shrink-0 p-3">
-            <ListGroup items={professions} onItemSelect={handleProfessionSelect} selectedItem={selectedProf} />
+            <ListGroup
+              items={professions}
+              onItemSelect={handleProfessionSelect}
+              selectedItem={selectedProf}
+            />
             <button className="btn btn-secondary mt-2" onClick={clearFilter}>
               Очистить
             </button>
@@ -62,6 +83,11 @@ const UsersList = ({ users, onDelete, onToggleBookMark }) => {
         )}
         <div className="d-flex flex-column">
           <SearchStatus length={count} />
+          <SearchBar
+            data={users}
+            value={searchQuery}
+            onSearch={() => handleSearch(users, { searchBy: 'name' })}
+          />
           {count > 0 && (
             <UsersTable
               users={usersCrop}
