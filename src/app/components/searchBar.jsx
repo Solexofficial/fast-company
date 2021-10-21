@@ -17,9 +17,6 @@ const SearchBar = ({ value, onSearch }) => {
 };
 
 SearchBar.propTypes = {
-  // data: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
-  // query: PropTypes.string,
-  // searchBy: PropTypes.string
   onSearch: PropTypes.func,
   value: PropTypes.string
 };
