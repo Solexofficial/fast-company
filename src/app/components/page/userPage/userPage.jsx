@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import API from '../api';
-import User from '../components/user';
+import API from '../../../api';
+import User from './user';
 
 const UserPage = ({ userId }) => {
   const [currentUser, setCurrentUser] = useState(null);

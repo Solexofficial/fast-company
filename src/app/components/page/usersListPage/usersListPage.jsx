@@ -1,23 +1,29 @@
 /* eslint-disable indent */
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { paginate } from '../utils/paginate';
-import UsersTable from '../components/usersTable';
-import SearchStatus from '../components/searchStatus';
-import Pagination from '../components/pagination';
-import ListGroup from '../components/listGroup';
-import api from '../api';
 import _ from 'lodash';
-import SearchBar from './searchBar';
-import searchBy from '../utils/search';
+import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import api from '../../../api';
+import ListGroup from '../../common/listGroup';
+import Pagination from '../../common/pagination';
+import SearchStatus from '../../ui/searchStatus';
+import UsersTable from '../../ui/usersTable';
+import { paginate } from '../../../utils/paginate';
+import searchBy from '../../../utils/search';
+import SearchBar from '../../common/searchBar';
 
-const UsersList = ({ users, onDelete, onToggleBookMark }) => {
+const UsersListPage = () => {
+  const [users, setUsers] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const [professions, setProfessions] = useState();
   const [selectedProf, setSelectedProf] = useState();
   const [sortBy, setSortBy] = useState({ path: 'name', order: 'asc' });
   const [searchQuery, setSearchQuery] = useState('');
   const pageSize = 8;
+
+  useEffect(() => {
+    api.users.fetchAll().then((data) => setUsers(data));
+  }, []);
+
   useEffect(() => {
     if (!professions) {
       api.professions.fetchAll().then((data) => setProfessions(data));
@@ -27,6 +33,22 @@ const UsersList = ({ users, onDelete, onToggleBookMark }) => {
   useEffect(() => {
     setCurrentPage(1);
   }, [selectedProf]);
+
+  const handleDelete = (userId) => {
+    return setUsers(users.filter((user) => user._id !== userId));
+  };
+
+  const handleToggleBookMark = (userId) => {
+    setUsers(
+      users.filter((user) => {
+        if (user._id === userId) {
+          user.bookmark = !user.bookmark;
+          return user;
+        }
+        return user;
+      })
+    );
+  };
 
   const handleProfessionSelect = (item) => {
     setSearchQuery('');
@@ -84,8 +106,8 @@ const UsersList = ({ users, onDelete, onToggleBookMark }) => {
               users={usersCrop}
               onSort={handleSort}
               selectedSort={sortBy}
-              onToggleBookMark={onToggleBookMark}
-              onDelete={onDelete}
+              onToggleBookMark={handleToggleBookMark}
+              onDelete={handleDelete}
             />
           )}
           <div className="d-flex justify-content-center">
@@ -103,9 +125,9 @@ const UsersList = ({ users, onDelete, onToggleBookMark }) => {
   return <h1 className="d-flex justify-content-center align-items-center">Loading...</h1>;
 };
 
-UsersList.propTypes = {
+UsersListPage.propTypes = {
   users: PropTypes.array,
   onDelete: PropTypes.func,
   onToggleBookMark: PropTypes.func
 };
-export default UsersList;
+export default UsersListPage;

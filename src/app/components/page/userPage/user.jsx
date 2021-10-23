@@ -1,7 +1,7 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import QualitiesList from './qualitiesList';
+import React from 'react';
 import { useHistory } from 'react-router';
+import Qualities from '../../ui/qualities';
 
 const User = ({ name, qualities, profession, completedMeetings, rate }) => {
   const history = useHistory();
@@ -15,7 +15,7 @@ const User = ({ name, qualities, profession, completedMeetings, rate }) => {
       <h1 className="mb-3">{name}</h1>
       <h2>{`Профессия: ${profession.name}`}</h2>
       <ul>
-        <QualitiesList qualities={qualities} />
+        <Qualities qualities={qualities} />
       </ul>
       <span>{`completedMeetings: ${completedMeetings}`}</span>
       <h3 className="my-3">{`Rate: ${rate}/5`}</h3>
