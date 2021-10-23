@@ -16,7 +16,6 @@ const App = () => {
         <Route exact path="/" component={Main} />
         <Redirect to="/" />
       </Switch>
-      ;
     </>
   );
 };
