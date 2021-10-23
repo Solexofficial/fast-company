@@ -2,6 +2,7 @@
   "name": "name",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://solexofficial.github.io/fast-company",
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
@@ -20,7 +21,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "format": "npx prettier --write ."
+    "format": "npx prettier --write .",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -46,7 +48,8 @@
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0",
-    "eslint-plugin-react": "^7.25.1"
+    "eslint-plugin-react": "^7.25.1",
+    "gh-pages": "^3.2.3"
   },
   "main": "index.js",
   "repository": "https://github.com/Solexofficial/fast-company.git",
