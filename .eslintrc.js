@@ -13,9 +13,9 @@ module.exports = {
   },
   plugins: ['react'],
   rules: {
-    indent: ['error', 2, { SwitchCase: 1 }],
+    indent: [0, 2, { SwitchCase: 1, flatTernaryExpressions: true }],
     semi: [2, 'always'],
-    quotes: ['error', 'single', { allowTemplateLiterals: true }, { flatTernaryExpressions: true }],
+    quotes: ['error', 'single', { allowTemplateLiterals: true }],
     'space-before-function-paren': ['error', 'never'],
     'multiline-ternary': ['off']
   }
