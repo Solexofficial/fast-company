@@ -9,7 +9,7 @@ const UserPage = ({ userId }) => {
   const [user, setUser] = useState();
 
   const handleClick = () => {
-    history.replace('/users');
+    history.push(`/users/${userId}/edit`);
   };
   useEffect(() => {
     API.users.getById(userId).then((data) => setUser(data));
@@ -27,7 +27,7 @@ const UserPage = ({ userId }) => {
         <h3 className="my-3">{`Rate: ${user.rate}/5`}</h3>
         <div>
           <button className="btn btn-success" onClick={handleClick}>
-            Все пользователи
+            Изменить
           </button>
         </div>
       </div>
