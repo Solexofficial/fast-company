@@ -3,9 +3,10 @@ import { validator } from '../../utils/validator';
 import TextField from '../common/form/textField';
 import api from '../../api';
 import SelectField from '../common/form/selectField';
+import RadioField from '../common/form/radioField';
 
 const RegisterForm = () => {
-  const [data, setData] = useState({ email: '', password: '', profession: '' });
+  const [data, setData] = useState({ email: '', password: '', profession: '', sex: 'male' });
   const [errors, setErrors] = useState({});
   const [professions, setProfessions] = useState();
 
@@ -88,6 +89,17 @@ const RegisterForm = () => {
         error={errors.profession}
         defaultOption="Choose..."
         options={professions}
+        onChange={handleChange}
+      />
+
+      <RadioField
+        options={[
+          { name: 'Male', value: 'male' },
+          { name: 'Female', value: 'female' },
+          { name: 'Other', value: 'other' }
+        ]}
+        value={data.sex}
+        name="sex"
         onChange={handleChange}
       />
 
