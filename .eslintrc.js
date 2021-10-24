@@ -15,7 +15,7 @@ module.exports = {
   rules: {
     indent: ['error', 2, { SwitchCase: 1 }],
     semi: [2, 'always'],
-    quotes: ['error', 'single', { allowTemplateLiterals: true }],
+    quotes: ['error', 'single', { allowTemplateLiterals: true }, { flatTernaryExpressions: true }],
     'space-before-function-paren': ['error', 'never'],
     'multiline-ternary': ['off']
   }
