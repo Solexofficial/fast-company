@@ -108,8 +108,15 @@ const RegisterForm = () => {
         value={data.sex}
         name="sex"
         onChange={handleChange}
+        label="Выберите ваш пол"
       />
-      <MultiSelectField options={qualities} onChange={handleChange} name="qualities" />
+      <MultiSelectField
+        options={qualities}
+        onChange={handleChange}
+        name="qualities"
+        label="Выберите ваши качества"
+        defaultValue={data.qualities}
+      />
 
       <button className="btn btn-primary w-100 mx-auto" type="submit" disabled={!isValid}>
         Submit
