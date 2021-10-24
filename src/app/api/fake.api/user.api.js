@@ -26,7 +26,7 @@ const qualities = {
     color: 'info'
   },
   uncertain: {
-    _id: '67rdca3eeb7f6fgeed471102',
+    _id: '67rdca3eeb7f6fgeed471103',
     name: 'Неуверенный',
     color: 'dark'
   }
@@ -145,18 +145,17 @@ const users = [
 
 const fetchAll = () =>
   new Promise((resolve) => {
-    window.setTimeout(() => {
+    window.setTimeout(function () {
       resolve(users);
     }, 2000);
   });
 
 const getById = (id) =>
   new Promise((resolve) => {
-    window.setTimeout(() => {
+    window.setTimeout(function () {
       resolve(users.find((user) => user._id === id));
-    }, 2000);
+    }, 1000);
   });
-
 export default {
   fetchAll,
   getById

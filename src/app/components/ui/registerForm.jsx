@@ -4,17 +4,24 @@ import TextField from '../common/form/textField';
 import api from '../../api';
 import SelectField from '../common/form/selectField';
 import RadioField from '../common/form/radioField';
+import MultiSelectField from '../common/form/multiSelectField';
 
 const RegisterForm = () => {
-  const [data, setData] = useState({ email: '', password: '', profession: '', sex: 'male' });
+  const [data, setData] = useState({
+    email: '',
+    password: '',
+    profession: '',
+    sex: 'male',
+    qualities: []
+  });
   const [errors, setErrors] = useState({});
-  const [professions, setProfessions] = useState();
+  const [professions, setProfessions] = useState([]);
+  const [qualities, setQualities] = useState({});
 
   useEffect(() => {
-    if (!professions) {
-      api.professions.fetchAll().then((data) => setProfessions(data));
-    }
-  }, [professions]);
+    api.professions.fetchAll().then((data) => setProfessions(data));
+    api.qualities.fetchAll().then((data) => setQualities(data));
+  }, []);
 
   const validate = () => {
     const errors = validator(data, validatorConfig);
@@ -52,7 +59,7 @@ const RegisterForm = () => {
     validate();
   }, [data]);
 
-  const handleChange = ({ target }) => {
+  const handleChange = (target) => {
     setData((prevState) => ({ ...prevState, [target.name]: target.value }));
   };
 
@@ -66,7 +73,7 @@ const RegisterForm = () => {
   return (
     <form onSubmit={handleSubmit}>
       <TextField
-        label="email"
+        label="Электронная почта"
         type="text"
         name="email"
         placeholder="Введите ваш e-mail"
@@ -75,7 +82,7 @@ const RegisterForm = () => {
         error={errors.email}
       />
       <TextField
-        label="password"
+        label="Пароль"
         type="password"
         name="password"
         placeholder="Введите пароль"
@@ -102,6 +109,7 @@ const RegisterForm = () => {
         name="sex"
         onChange={handleChange}
       />
+      <MultiSelectField options={qualities} onChange={handleChange} name="qualities" />
 
       <button className="btn btn-primary w-100 mx-auto" type="submit" disabled={!isValid}>
         Submit

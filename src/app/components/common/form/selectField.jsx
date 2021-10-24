@@ -13,6 +13,10 @@ const SelectField = ({ label, value, onChange, defaultOption, options, error }) 
         }))
       : options;
 
+  const handleChange = ({ target }) => {
+    onChange({ name: target.name, value: target.value });
+  };
+
   return (
     <div className="mb-4">
       <label htmlFor="validationCustom04" className="form-label">
@@ -23,13 +27,13 @@ const SelectField = ({ label, value, onChange, defaultOption, options, error }) 
         id="validationCustom04"
         value={value}
         name="profession"
-        onChange={onChange}>
+        onChange={handleChange}>
         <option disabled value="">
           {defaultOption}
         </option>
         {optionsArray &&
           optionsArray.map((option) => (
-            <option key={option._id} value={option.value}>
+            <option key={option._id} value={option.name}>
               {option.name}
             </option>
           ))}

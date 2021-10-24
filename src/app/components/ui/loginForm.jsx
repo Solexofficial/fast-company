@@ -53,7 +53,7 @@ const LoginForm = () => {
   return (
     <form onSubmit={handleSubmit}>
       <TextField
-        label="email"
+        label="Электронная почта"
         type="text"
         name="email"
         placeholder="Введите ваш e-mail"
@@ -62,7 +62,7 @@ const LoginForm = () => {
         error={errors.email}
       />
       <TextField
-        label="password"
+        label="Пароль"
         type="password"
         name="password"
         placeholder="Введите пароль"
