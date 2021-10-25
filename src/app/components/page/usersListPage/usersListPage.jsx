@@ -24,6 +24,7 @@ const UsersListPage = () => {
     api.users.fetchAll().then((data) => setUsers(data));
   }, []);
 
+  console.log('users', users);
   useEffect(() => {
     if (!professions) {
       api.professions.fetchAll().then((data) => setProfessions(data));
