@@ -22,12 +22,14 @@ const UserEditPage = ({ userId }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // valid profession for render
     for (const profession in professions) {
       if (professions[profession]._id === user.profession) {
         user.profession = professions[profession];
       }
     }
 
+    // valid qualities for render
     user.qualities = Object.values(qualities).filter((quality) =>
       user.qualities.map((quality) => quality.value).includes(quality._id)
     );
