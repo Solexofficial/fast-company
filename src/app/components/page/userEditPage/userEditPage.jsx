@@ -6,10 +6,10 @@ import SelectField from '../../common/form/selectField';
 import RadioField from '../../common/form/radioField';
 import MultiSelectField from '../../common/form/multiSelectField';
 import { validator } from '../../../utils/validator';
-// import { useHistory } from 'react-router';
+import { useHistory } from 'react-router';
 
 const UserEditPage = ({ userId }) => {
-  // const history = useHistory();
+  const history = useHistory();
   const [user, setUser] = useState();
   const [qualities, setQualities] = useState({});
   const [professions, setProfessions] = useState([]);
@@ -24,24 +24,16 @@ const UserEditPage = ({ userId }) => {
 
     for (const profession in professions) {
       if (professions[profession]._id === user.profession) {
-        console.log(professions[profession]);
         user.profession = professions[profession];
       }
     }
-    // console.log(
-    //   'qa',
-    //   user.qualities.map((quality) => quality.value)
-    // );
-    // console.log(
-    //   'filter',
-    //   Object.values(qualities).filter((quality) =>
-    //     user.qualities.filter((userQuality) => userQuality.value === quality._id)
-    //   )
-    // );
+
+    user.qualities = Object.values(qualities).filter((quality) =>
+      user.qualities.map((quality) => quality.value).includes(quality._id)
+    );
+
     api.users.update(userId, user);
-    console.log(user.profession.name);
-    console.log('user', user);
-    // history.replace('/users');
+    history.replace('/users');
   };
 
   useEffect(() => {
