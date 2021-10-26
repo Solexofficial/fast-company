@@ -2,17 +2,20 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import API from '../../../api';
 import Qualities from '../../ui/qualities';
+import CommentsList from '../../ui/comments/commentsList';
 import { useHistory } from 'react-router';
 
 const UserPage = ({ userId }) => {
   const history = useHistory();
   const [user, setUser] = useState();
+  const [comments, setComments] = useState();
 
   const handleClick = () => {
     history.push(`/users/${userId}/edit`);
   };
   useEffect(() => {
     API.users.getById(userId).then((data) => setUser(data));
+    API.comments.fetchCommentsForUser(userId).then((data) => setComments(data));
   }, []);
 
   if (user) {
@@ -29,7 +32,9 @@ const UserPage = ({ userId }) => {
                 </button>
                 <div className="d-flex flex-column align-items-center text-center position-relative">
                   <img
-                    src="https://avatars.dicebear.com/api/avataaars/qweqwdas.svg"
+                    src={`https://avatars.dicebear.com/api/avataaars/${(Math.random() + 1)
+                      .toString(36)
+                      .substring(7)}.svg`}
                     className="rounded-circle"
                     width="150"
                   />
@@ -97,46 +102,7 @@ const UserPage = ({ userId }) => {
               </div>
             </div>
 
-            <div className="card mb-3">
-              <div className="card-body">
-                <h2>Comments</h2>
-                <hr />
-                <div className="bg-light card-body mb-3">
-                  <div className="row">
-                    <div className="col">
-                      <div className="d-flex flex-start">
-                        <img
-                          src="https://avatars.dicebear.com/api/avataaars/qweqasdas.svg"
-                          className="rounded-circle shadow-1-strong me-3"
-                          alt="avatar"
-                          width="65"
-                          height="65"
-                        />
-                        <div className="flex-grow-1 flex-shrink-1">
-                          <div className="mb-4">
-                            <div className="d-flex justify-content-between align-items-center">
-                              <p className="mb-1">
-                                Джон Дориан
-                                <span className="small"> 5 минут назад </span>
-                              </p>
-                              <button className="btn btn-sm text-primary d-flex align-items-center">
-                                <i className="bi bi-x-lg"></i>
-                              </button>
-                            </div>
-                            <p className="small mb-0">
-                              Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis,
-                              soluta facilis fugit hic quasi sapiente accusamus quia voluptatem
-                              dolorum laboriosam id iste voluptas modi animi eius voluptatum
-                              adipisci amet officiis.
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <CommentsList comments={comments} />
           </div>
         </div>
       </div>
