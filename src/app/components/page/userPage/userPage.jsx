@@ -8,14 +8,13 @@ import { useHistory } from 'react-router';
 const UserPage = ({ userId }) => {
   const history = useHistory();
   const [user, setUser] = useState();
-  const [comments, setComments] = useState();
 
   const handleClick = () => {
     history.push(`/users/${userId}/edit`);
   };
+
   useEffect(() => {
     API.users.getById(userId).then((data) => setUser(data));
-    API.comments.fetchCommentsForUser(userId).then((data) => setComments(data));
   }, []);
 
   if (user) {
@@ -54,7 +53,7 @@ const UserPage = ({ userId }) => {
             <div className="card mb-3">
               <div className="card-body d-flex flex-column justify-content-center text-center">
                 <h5 className="card-title">
-                  <span>Qualities</span>
+                  <span>Качества</span>
                 </h5>
                 <p className="card-text">
                   <Qualities qualities={user.qualities} />
@@ -65,7 +64,7 @@ const UserPage = ({ userId }) => {
               <div className="card mb-3">
                 <div className="card-body d-flex flex-column justify-content-center text-center">
                   <h5 className="card-title">
-                    <span>Completed meetings</span>
+                    <span>Завершенных встреч</span>
                   </h5>
 
                   <h1 className="display-1">{user.completedMeetings}</h1>
@@ -78,7 +77,7 @@ const UserPage = ({ userId }) => {
             <div className="card mb-2">
               <div className="card-body">
                 <div>
-                  <h2>New comment</h2>
+                  <h2>Новый комментарий</h2>
                   <div className="mb-4">
                     <select className="form-select" name="userId" value="">
                       <option disabled value="" selected>
@@ -102,7 +101,7 @@ const UserPage = ({ userId }) => {
               </div>
             </div>
 
-            <CommentsList comments={comments} />
+            <CommentsList userId={userId} />
           </div>
         </div>
       </div>
