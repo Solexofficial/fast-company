@@ -15,6 +15,12 @@ const UserEditPage = ({ userId }) => {
   const [professions, setProfessions] = useState([]);
   const [errors, setErrors] = useState({});
 
+  useEffect(() => {
+    api.qualities.fetchAll().then((data) => setQualities(data));
+    api.professions.fetchAll().then((data) => setProfessions(data));
+    api.users.getById(userId).then((data) => setUser(data));
+  }, []);
+
   const handleChange = (target) => {
     setUser((prevState) => ({ ...prevState, [target.name]: target.value }));
   };
@@ -31,18 +37,12 @@ const UserEditPage = ({ userId }) => {
 
     // valid qualities for render
     user.qualities = Object.values(qualities).filter((quality) =>
-      user.qualities.map((quality) => quality.value).includes(quality._id)
+      user.qualities.map((quality) => quality.value || quality._id).includes(quality._id)
     );
 
     api.users.update(userId, user);
-    history.replace('/users');
+    history.goBack();
   };
-
-  useEffect(() => {
-    api.users.getById(userId).then((data) => setUser(data));
-    api.qualities.fetchAll().then((data) => setQualities(data));
-    api.professions.fetchAll().then((data) => setProfessions(data));
-  }, []);
 
   const validate = () => {
     const errors = validator(user, validatorConfig);
