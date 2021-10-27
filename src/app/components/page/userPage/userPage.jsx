@@ -26,6 +26,7 @@ const UserPage = ({ userId }) => {
               <div className="card-body">
                 <button
                   className="position-absolute top-0 end-0 btn btn-light btn-sm"
+                  style={{ zIndex: 2 }}
                   onClick={handleClick}>
                   <i className="bi bi-gear"></i>
                 </button>
