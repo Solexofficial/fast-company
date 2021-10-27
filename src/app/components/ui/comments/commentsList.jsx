@@ -10,7 +10,6 @@ const CommentsList = ({ userId }) => {
     API.comments
       .fetchCommentsForUser(userId)
       .then((data) => setComments(data.sort((a, b) => a.created_at - b.created_at)));
-    console.log(comments);
   }, []);
 
   const handleDelete = (id) => {
