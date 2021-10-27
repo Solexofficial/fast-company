@@ -9,7 +9,8 @@ const CommentsList = ({ userId }) => {
   useEffect(() => {
     API.comments
       .fetchCommentsForUser(userId)
-      .then((data) => setComments(data.sort((a, b) => b.createdAt - a.createdAt)));
+      .then((data) => setComments(data.sort((a, b) => a.created_at - b.created_at)));
+    console.log(comments);
   }, []);
 
   const handleDelete = (id) => {
