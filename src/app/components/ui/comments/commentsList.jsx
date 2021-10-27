@@ -19,18 +19,21 @@ const CommentsList = ({ userId }) => {
         setComments((prevState) => prevState.filter((comment) => comment._id !== data))
       );
   };
+
   return (
-    <>
-      <div className="card mb-3">
-        <div className="card-body ">
-          <h2>Комментарии</h2>
-          <hr />
-          {comments.map((comment) => (
-            <Comment key={comment._id} comment={comment} onDelete={handleDelete} />
-          ))}
+    comments.length > 0 && (
+      <>
+        <div className="card mb-3">
+          <div className="card-body ">
+            <h2>Комментарии</h2>
+            <hr />
+            {comments.map((comment) => (
+              <Comment key={comment._id} comment={comment} onDelete={handleDelete} />
+            ))}
+          </div>
         </div>
-      </div>
-    </>
+      </>
+    )
   );
 };
 

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import API from '../../../api';
+import formatDate from '../../../utils/formatDate';
 
 const Comment = ({ comment, onDelete }) => {
   const [user, setUser] = useState();
-  console.log(comment);
-  console.log(new Date(Number(comment.created_at)));
+  console.log('comment: ', comment);
   useEffect(() => {
     API.users.getById(comment.userId).then((data) => setUser(data));
   }, []);
@@ -29,7 +29,7 @@ const Comment = ({ comment, onDelete }) => {
                 <div className="mb-4">
                   <div className="d-flex justify-content-between align-items-center">
                     <p className="mb-1 ">
-                      {user.name} - <span className="small">{comment.created_at}</span>
+                      {user.name} - <span className="small">{formatDate(comment.created_at)}</span>
                     </p>
                     <button
                       className="btn btn-sm text-primary d-flex align-items-center"

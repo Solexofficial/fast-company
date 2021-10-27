@@ -100,8 +100,7 @@ const UserPage = ({ userId }) => {
                 </div>
               </div>
             </div>
-
-            <CommentsList userId={userId} />
+            {<CommentsList userId={userId} />}
           </div>
         </div>
       </div>
