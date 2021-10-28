@@ -96,6 +96,7 @@ const UserEditPage = ({ userId }) => {
                 label="Выберите вашу профессию"
                 value={user.profession._id}
                 error={errors.professions}
+                name="profession"
                 defaultOption="Choose..."
                 options={professions}
                 onChange={handleChange}
