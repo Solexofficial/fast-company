@@ -4,18 +4,35 @@ import API from '../../../api';
 import Qualities from '../../ui/qualities';
 import CommentsList from '../../ui/comments/commentsList';
 import { useHistory } from 'react-router';
+import CommentForm from '../../ui/commentForm';
 
 const UserPage = ({ userId }) => {
   const history = useHistory();
   const [user, setUser] = useState();
+  const [comments, setComments] = useState([]);
+
+  useEffect(() => {
+    API.users.getById(userId).then((data) => setUser(data));
+    API.comments
+      .fetchCommentsForUser(userId)
+      .then((data) => setComments(data.sort((a, b) => b.created_at - a.created_at)));
+  }, []);
 
   const handleClick = () => {
     history.push(`/users/${userId}/edit`);
   };
 
-  useEffect(() => {
-    API.users.getById(userId).then((data) => setUser(data));
-  }, []);
+  const handleDelete = (id) => {
+    API.comments
+      .remove(id)
+      .then((data) =>
+        setComments((prevState) => prevState.filter((comment) => comment._id !== data))
+      );
+  };
+
+  const handleAddComment = (data) => {
+    API.comments.add(data).then((data) => setComments((prevState) => [data, ...prevState]));
+  };
 
   if (user) {
     return (
@@ -75,31 +92,10 @@ const UserPage = ({ userId }) => {
           <div className="col-md-8">
             <div className="card mb-2">
               <div className="card-body">
-                <div>
-                  <h2>Новый комментарий</h2>
-                  <div className="mb-4">
-                    <select className="form-select" name="userId" value="">
-                      <option disabled value="" selected>
-                        Выберите пользователя
-                      </option>
-
-                      <option>Доктор</option>
-                      <option>Тусер</option>
-                    </select>
-                  </div>
-                  <div className="mb-4">
-                    <label htmlFor="exampleFormControlTextarea1" className="form-label">
-                      Сообщение
-                    </label>
-                    <textarea
-                      className="form-control"
-                      id="exampleFormControlTextarea1"
-                      rows="3"></textarea>
-                  </div>
-                </div>
+                <CommentForm userId={userId} onAdd={handleAddComment} />
               </div>
             </div>
-            {<CommentsList userId={userId} />}
+            <CommentsList comments={comments} onDelete={handleDelete} />
           </div>
         </div>
       </div>
