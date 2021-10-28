@@ -1,25 +1,8 @@
 import PropTypes from 'prop-types';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Comment from './comment';
-import API from '../../../api';
 
-const CommentsList = ({ userId }) => {
-  const [comments, setComments] = useState([]);
-
-  useEffect(() => {
-    API.comments
-      .fetchCommentsForUser(userId)
-      .then((data) => setComments(data.sort((a, b) => a.created_at - b.created_at)));
-  }, []);
-
-  const handleDelete = (id) => {
-    API.comments
-      .remove(id)
-      .then((data) =>
-        setComments((prevState) => prevState.filter((comment) => comment._id !== data))
-      );
-  };
-
+const CommentsList = ({ comments, onDelete }) => {
   return (
     comments.length > 0 && (
       <>
@@ -28,7 +11,7 @@ const CommentsList = ({ userId }) => {
             <h2>Комментарии</h2>
             <hr />
             {comments.map((comment) => (
-              <Comment key={comment._id} comment={comment} onDelete={handleDelete} />
+              <Comment key={comment._id} comment={comment} onDelete={onDelete} />
             ))}
           </div>
         </div>
@@ -38,7 +21,8 @@ const CommentsList = ({ userId }) => {
 };
 
 CommentsList.propTypes = {
-  userId: PropTypes.string
+  comments: PropTypes.array,
+  onDelete: PropTypes.func
 };
 
 export default CommentsList;
