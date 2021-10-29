@@ -25,6 +25,10 @@ const UserEditPage = ({ userId }) => {
     setUser((prevState) => ({ ...prevState, [target.name]: target.value }));
   };
 
+  const handleGoBack = () => {
+    history.goBack();
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -41,7 +45,7 @@ const UserEditPage = ({ userId }) => {
     );
 
     api.users.update(userId, user);
-    history.goBack();
+    handleGoBack();
   };
 
   const validate = () => {
@@ -72,6 +76,11 @@ const UserEditPage = ({ userId }) => {
   return (
     <div className="container mt-5">
       <div className="row">
+        <div>
+          <button className="btn btn-primary" onClick={handleGoBack}>
+            <i className="bi bi-arrow-left-square"></i> Назад
+          </button>
+        </div>
         <div className="col-md-6 offset-md-3 shadow p-4">
           {user ? (
             <form onSubmit={handleSubmit}>
