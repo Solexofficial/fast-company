@@ -5,7 +5,6 @@ import formatDate from '../../../utils/formatDate';
 
 const Comment = ({ comment, onDelete }) => {
   const [user, setUser] = useState();
-  console.log('comment: ', comment);
   useEffect(() => {
     API.users.getById(comment.userId).then((data) => setUser(data));
   }, []);

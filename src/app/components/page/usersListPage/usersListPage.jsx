@@ -24,7 +24,6 @@ const UsersListPage = () => {
     api.users.fetchAll().then((data) => setUsers(data));
   }, []);
 
-  console.log('users', users);
   useEffect(() => {
     if (!professions) {
       api.professions.fetchAll().then((data) => setProfessions(data));
@@ -66,7 +65,7 @@ const UsersListPage = () => {
 
   const handleSearch = (event) => {
     setSelectedProf();
-    setSearchQuery(event.target.value);
+    setSearchQuery(event.value);
   };
 
   const clearFilter = () => {

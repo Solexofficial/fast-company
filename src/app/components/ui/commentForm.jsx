@@ -47,33 +47,37 @@ const CommentForm = ({ userId, onAdd }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Новый комментарий</h2>
-      <div className="mb-4">
-        <SelectField
-          options={users}
-          name="userId"
-          value={data.userId}
-          defaultOption={'Выберите пользователя'}
-          onChange={handleChange}
-          error={errors.userId}
-        />
+    <div className="card mb-2">
+      <div className="card-body">
+        <form onSubmit={handleSubmit}>
+          <h2>Новый комментарий</h2>
+          <div className="mb-4">
+            <SelectField
+              options={users}
+              name="userId"
+              value={data.userId}
+              defaultOption={'Выберите пользователя'}
+              onChange={handleChange}
+              error={errors.userId}
+            />
+          </div>
+          <div className="mb-4">
+            <TextAreaField
+              label="Сообщение"
+              name="content"
+              value={data.content}
+              onChange={handleChange}
+              error={errors.content}
+            />
+          </div>
+          <div className="d-flex flex-row-reverse">
+            <button className="btn btn-primary" type="submit" disabled={!isValid}>
+              Опубликовать
+            </button>
+          </div>
+        </form>
       </div>
-      <div className="mb-4">
-        <TextAreaField
-          label="Сообщение"
-          name="content"
-          value={data.content}
-          onChange={handleChange}
-          error={errors.content}
-        />
-      </div>
-      <div className="d-flex flex-row-reverse">
-        <button className="btn btn-primary" type="submit" disabled={!isValid}>
-          Опубликовать
-        </button>
-      </div>
-    </form>
+    </div>
   );
 };
 
