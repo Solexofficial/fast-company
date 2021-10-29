@@ -68,7 +68,7 @@ const CommentForm = ({ userId, onAdd }) => {
           error={errors.content}
         />
       </div>
-      <div className="mb-4 d-flex flex-row-reverse">
+      <div className="d-flex flex-row-reverse">
         <button className="btn btn-primary" type="submit" disabled={!isValid}>
           Опубликовать
         </button>

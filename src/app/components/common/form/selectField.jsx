@@ -27,7 +27,7 @@ const SelectField = ({ label, value, name, onChange, defaultOption, options, err
         value={value}
         name={name}
         onChange={handleChange}>
-        <option disabled value="" key={defaultOption} selected>
+        <option disabled value="" key={defaultOption} defaultValue={defaultOption}>
           {defaultOption}
         </option>
         {optionsArray &&
