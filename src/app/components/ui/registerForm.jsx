@@ -99,6 +99,7 @@ const RegisterForm = () => {
       />
       <SelectField
         label="Выберите вашу профессию"
+        name="profession"
         value={data.profession}
         error={errors.profession}
         defaultOption="Choose..."

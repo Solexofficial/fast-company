@@ -15,8 +15,18 @@ const UserEditPage = ({ userId }) => {
   const [professions, setProfessions] = useState([]);
   const [errors, setErrors] = useState({});
 
+  useEffect(() => {
+    api.qualities.fetchAll().then((data) => setQualities(data));
+    api.professions.fetchAll().then((data) => setProfessions(data));
+    api.users.getById(userId).then((data) => setUser(data));
+  }, []);
+
   const handleChange = (target) => {
     setUser((prevState) => ({ ...prevState, [target.name]: target.value }));
+  };
+
+  const handleGoBack = () => {
+    history.goBack();
   };
 
   const handleSubmit = (e) => {
@@ -31,18 +41,12 @@ const UserEditPage = ({ userId }) => {
 
     // valid qualities for render
     user.qualities = Object.values(qualities).filter((quality) =>
-      user.qualities.map((quality) => quality.value).includes(quality._id)
+      user.qualities.map((quality) => quality.value || quality._id).includes(quality._id)
     );
 
     api.users.update(userId, user);
-    history.replace('/users');
+    handleGoBack();
   };
-
-  useEffect(() => {
-    api.users.getById(userId).then((data) => setUser(data));
-    api.qualities.fetchAll().then((data) => setQualities(data));
-    api.professions.fetchAll().then((data) => setProfessions(data));
-  }, []);
 
   const validate = () => {
     const errors = validator(user, validatorConfig);
@@ -72,6 +76,11 @@ const UserEditPage = ({ userId }) => {
   return (
     <div className="container mt-5">
       <div className="row">
+        <div>
+          <button className="btn btn-primary" onClick={handleGoBack}>
+            <i className="bi bi-arrow-left-square"></i> Назад
+          </button>
+        </div>
         <div className="col-md-6 offset-md-3 shadow p-4">
           {user ? (
             <form onSubmit={handleSubmit}>
@@ -96,6 +105,7 @@ const UserEditPage = ({ userId }) => {
                 label="Выберите вашу профессию"
                 value={user.profession._id}
                 error={errors.professions}
+                name="profession"
                 defaultOption="Choose..."
                 options={professions}
                 onChange={handleChange}
