@@ -6,31 +6,43 @@ import SelectField from '../../common/form/selectField';
 import RadioField from '../../common/form/radioField';
 import MultiSelectField from '../../common/form/multiSelectField';
 import { validator } from '../../../utils/validator';
-import { useHistory } from 'react-router';
+import { useHistory, useParams } from 'react-router';
+import BackHistoryButton from '../../common/backButton';
 
-const UserEditPage = ({ userId }) => {
+const UserEditPage = () => {
+  const { userId } = useParams();
   const history = useHistory();
+
   const [user, setUser] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const [qualities, setQualities] = useState({});
   const [professions, setProfessions] = useState([]);
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    api.qualities.fetchAll().then((data) => setQualities(data));
-    api.professions.fetchAll().then((data) => setProfessions(data));
-    api.users.getById(userId).then((data) => setUser(data));
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        await api.users.getById(userId).then((data) => setUser(data));
+        await api.qualities.fetchAll().then((data) => setQualities(data));
+        await api.professions.fetchAll().then((data) => setProfessions(data));
+      } catch (e) {
+        console.log(e);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
   }, []);
 
   const handleChange = (target) => {
     setUser((prevState) => ({ ...prevState, [target.name]: target.value }));
   };
 
-  const handleGoBack = () => {
-    history.goBack();
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
+    const isValid = validate();
+    if (!isValid) return;
 
     // valid profession for render
     for (const profession in professions) {
@@ -44,8 +56,7 @@ const UserEditPage = ({ userId }) => {
       user.qualities.map((quality) => quality.value || quality._id).includes(quality._id)
     );
 
-    api.users.update(userId, user);
-    handleGoBack();
+    api.users.update(userId, user).then((data) => history.push(`/users/${data._id}`));
   };
 
   const validate = () => {
@@ -64,25 +75,16 @@ const UserEditPage = ({ userId }) => {
       isEmail: {
         message: 'email введен некорректно'
       }
-    },
-    professions: {
-      isRequired: { message: 'Обязательно выберите вашу профессию' }
     }
   };
-  useEffect(() => {
-    validate();
-  }, [user]);
+  useEffect(() => validate(), [user]);
 
   return (
     <div className="container mt-5">
+      <BackHistoryButton />
       <div className="row">
-        <div>
-          <button className="btn btn-primary" onClick={handleGoBack}>
-            <i className="bi bi-arrow-left-square"></i> Назад
-          </button>
-        </div>
         <div className="col-md-6 offset-md-3 shadow p-4">
-          {user ? (
+          {!isLoading && Object.keys(professions).length > 0 ? (
             <form onSubmit={handleSubmit}>
               <TextField
                 label="Имя"

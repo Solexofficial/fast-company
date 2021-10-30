@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import SelectField from '../common/form/selectField';
-import API from '../../api';
-import TextAreaField from '../common/form/textAreaField';
-import { validator } from '../../utils/validator';
+import React, { useEffect, useState } from 'react';
+import API from '../../../api';
+import { validator } from '../../../utils/validator';
+import SelectField from '../../common/form/selectField';
+import TextAreaField from '../../common/form/textAreaField';
 
-const CommentForm = ({ userId, onAdd }) => {
-  const initialState = { content: '', pageId: userId, userId: '' };
-  const [data, setData] = useState(initialState);
-  const [users, setUsers] = useState();
+const initialData = { content: '', userId: '' };
+
+const AddCommentForm = ({ onSubmit }) => {
+  const [data, setData] = useState(initialData);
+  const [users, setUsers] = useState({});
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
@@ -40,10 +41,17 @@ const CommentForm = ({ userId, onAdd }) => {
     setData((prevState) => ({ ...prevState, [target.name]: target.value }));
   };
 
+  const clearForm = () => {
+    setData(initialData);
+    setErrors({});
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    onAdd(data);
-    setData(initialState);
+    const isValid = validate();
+    if (!isValid) return;
+    onSubmit(data);
+    clearForm();
   };
 
   return (
@@ -81,9 +89,8 @@ const CommentForm = ({ userId, onAdd }) => {
   );
 };
 
-CommentForm.propTypes = {
-  userId: PropTypes.string.isRequired,
-  onAdd: PropTypes.func.isRequired
+AddCommentForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired
 };
 
-export default CommentForm;
+export default AddCommentForm;

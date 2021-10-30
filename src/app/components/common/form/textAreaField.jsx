@@ -25,6 +25,7 @@ const TextAreaField = ({ label, name, value, onChange, error, rows }) => {
 };
 
 TextAreaField.defaultProps = {
+  type: 'text',
   rows: 3
 };
 
