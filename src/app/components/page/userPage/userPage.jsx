@@ -4,7 +4,7 @@ import API from '../../../api';
 import MeetingsCard from '../../ui/cards/meetingsCard';
 import UserCard from '../../ui/cards/userCard';
 import QualitiesCard from '../../ui/cards/qualitiesCard';
-import UserCommentsContainer from '../../ui/userCommentsContainer';
+import Comments from '../../ui/comments';
 
 const UserPage = ({ userId }) => {
   const [user, setUser] = useState();
@@ -24,7 +24,7 @@ const UserPage = ({ userId }) => {
           </div>
 
           <div className="col-md-8">
-            <UserCommentsContainer userId={userId} />
+            <Comments />
           </div>
         </div>
       </div>

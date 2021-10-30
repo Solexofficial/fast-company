@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import API from '../../../api';
 import formatDate from '../../../utils/formatDate';
 
-const Comment = ({ comment, onDelete }) => {
+const Comment = ({ comment, onRemove }) => {
   const [user, setUser] = useState();
   useEffect(() => {
     API.users.getById(comment.userId).then((data) => setUser(data));
@@ -32,7 +32,7 @@ const Comment = ({ comment, onDelete }) => {
                     </p>
                     <button
                       className="btn btn-sm text-primary d-flex align-items-center"
-                      onClick={() => onDelete(comment._id)}>
+                      onClick={() => onRemove(comment._id)}>
                       <i className="bi bi-x-lg"></i>
                     </button>
                   </div>
@@ -51,7 +51,7 @@ const Comment = ({ comment, onDelete }) => {
 
 Comment.propTypes = {
   comment: PropTypes.object,
-  onDelete: PropTypes.func
+  onRemove: PropTypes.func
 };
 
 export default Comment;
