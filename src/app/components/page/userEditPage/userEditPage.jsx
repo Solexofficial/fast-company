@@ -6,9 +6,11 @@ import SelectField from '../../common/form/selectField';
 import RadioField from '../../common/form/radioField';
 import MultiSelectField from '../../common/form/multiSelectField';
 import { validator } from '../../../utils/validator';
-import { useHistory } from 'react-router';
+import { useHistory, useParams } from 'react-router';
+import BackHistoryButton from '../../common/backButton';
 
-const UserEditPage = ({ userId }) => {
+const UserEditPage = () => {
+  const { userId } = useParams();
   const history = useHistory();
   const [user, setUser] = useState();
   const [qualities, setQualities] = useState({});
@@ -25,12 +27,10 @@ const UserEditPage = ({ userId }) => {
     setUser((prevState) => ({ ...prevState, [target.name]: target.value }));
   };
 
-  const handleGoBack = () => {
-    history.goBack();
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
+    const isValid = validate();
+    if (!isValid) return;
 
     // valid profession for render
     for (const profession in professions) {
@@ -44,8 +44,7 @@ const UserEditPage = ({ userId }) => {
       user.qualities.map((quality) => quality.value || quality._id).includes(quality._id)
     );
 
-    api.users.update(userId, user);
-    handleGoBack();
+    api.users.update(userId, user).then((data) => history.push(`/users/${data._id}`));
   };
 
   const validate = () => {
@@ -75,12 +74,8 @@ const UserEditPage = ({ userId }) => {
 
   return (
     <div className="container mt-5">
+      <BackHistoryButton />
       <div className="row">
-        <div>
-          <button className="btn btn-primary" onClick={handleGoBack}>
-            <i className="bi bi-arrow-left-square"></i> Назад
-          </button>
-        </div>
         <div className="col-md-6 offset-md-3 shadow p-4">
           {user ? (
             <form onSubmit={handleSubmit}>
