@@ -12,15 +12,24 @@ import BackHistoryButton from '../../common/backButton';
 const UserEditPage = () => {
   const { userId } = useParams();
   const history = useHistory();
+
   const [user, setUser] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const [qualities, setQualities] = useState({});
   const [professions, setProfessions] = useState([]);
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    api.qualities.fetchAll().then((data) => setQualities(data));
-    api.professions.fetchAll().then((data) => setProfessions(data));
-    api.users.getById(userId).then((data) => setUser(data));
+    try {
+      setIsLoading(true);
+      api.qualities.fetchAll().then((data) => setQualities(data));
+      api.professions.fetchAll().then((data) => setProfessions(data));
+      api.users.getById(userId).then((data) => setUser(data));
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
 
   const handleChange = (target) => {
@@ -63,21 +72,16 @@ const UserEditPage = () => {
       isEmail: {
         message: 'email введен некорректно'
       }
-    },
-    professions: {
-      isRequired: { message: 'Обязательно выберите вашу профессию' }
     }
   };
-  useEffect(() => {
-    validate();
-  }, [user]);
+  useEffect(() => validate(), [user]);
 
   return (
     <div className="container mt-5">
       <BackHistoryButton />
       <div className="row">
         <div className="col-md-6 offset-md-3 shadow p-4">
-          {user ? (
+          {!isLoading && Object.keys(professions).length > 0 ? (
             <form onSubmit={handleSubmit}>
               <TextField
                 label="Имя"
