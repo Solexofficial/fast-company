@@ -20,16 +20,11 @@ const UserEditPage = () => {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    try {
-      setIsLoading(true);
-      api.qualities.fetchAll().then((data) => setQualities(data));
-      api.professions.fetchAll().then((data) => setProfessions(data));
-      api.users.getById(userId).then((data) => setUser(data));
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setIsLoading(false);
-    }
+    setIsLoading(true);
+    api.qualities.fetchAll().then((data) => setQualities(data));
+    api.professions.fetchAll().then((data) => setProfessions(data));
+    api.users.getById(userId).then((data) => setUser(data));
+    setIsLoading(false);
   }, []);
 
   const handleChange = (target) => {
