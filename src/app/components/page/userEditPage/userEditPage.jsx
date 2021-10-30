@@ -20,20 +20,31 @@ const UserEditPage = () => {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
+    let isIgnoreResponse = false;
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        await api.users.getById(userId).then((data) => setUser(data));
-        await api.qualities.fetchAll().then((data) => setQualities(data));
-        await api.professions.fetchAll().then((data) => setProfessions(data));
+        const user = await api.users.getById(userId);
+        const qualities = await api.qualities.fetchAll();
+        const professions = await api.professions.fetchAll();
+        if (!isIgnoreResponse) {
+          setUser(user);
+          setQualities(qualities);
+          setProfessions(professions);
+        }
       } catch (e) {
         console.log(e);
       } finally {
         setIsLoading(false);
       }
     };
+
     fetchData();
-  }, []);
+
+    return () => {
+      isIgnoreResponse = true;
+    };
+  }, [userId]);
 
   const handleChange = (target) => {
     setUser((prevState) => ({ ...prevState, [target.name]: target.value }));
