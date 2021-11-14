@@ -22,6 +22,10 @@ export const ProfessionProvider = ({ children }) => {
     }
   };
 
+  const getProfessionById = (id) => {
+    return professions.find((p) => p._id === id);
+  };
+
   useEffect(() => {
     getProfessions();
   }, []);
@@ -39,7 +43,7 @@ export const ProfessionProvider = ({ children }) => {
     setLoading(false);
   }
   return (
-    <ProfessionContext.Provider value={{ isLoading, professions }}>
+    <ProfessionContext.Provider value={{ isLoading, professions, getProfessionById }}>
       {children}
     </ProfessionContext.Provider>
   );
