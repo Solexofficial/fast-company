@@ -1,5 +1,6 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router';
+import { ToastContainer } from 'react-toastify';
 
 import Login from './layouts/login';
 import Users from './layouts/users';
@@ -16,6 +17,7 @@ const App = () => {
         <Route exact path="/" component={Main} />
         <Redirect to="/" />
       </Switch>
+      <ToastContainer />
     </>
   );
 };

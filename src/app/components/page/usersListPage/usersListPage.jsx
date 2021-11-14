@@ -10,9 +10,9 @@ import UsersTable from '../../ui/usersTable';
 import { paginate } from '../../../utils/paginate';
 import searchBy from '../../../utils/search';
 import SearchBar from '../../common/searchBar';
+import { useUsers } from '../../../hooks/useUsers';
 
 const UsersListPage = () => {
-  const [users, setUsers] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const [professions, setProfessions] = useState();
   const [selectedProf, setSelectedProf] = useState();
@@ -20,9 +20,8 @@ const UsersListPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const pageSize = 8;
 
-  useEffect(() => {
-    api.users.fetchAll().then((data) => setUsers(data));
-  }, []);
+  const { users } = useUsers();
+  console.log(users);
 
   useEffect(() => {
     if (!professions) {
@@ -35,19 +34,21 @@ const UsersListPage = () => {
   }, [selectedProf]);
 
   const handleDelete = (userId) => {
-    return setUsers(users.filter((user) => user._id !== userId));
+    // return setUsers(users.filter((user) => user._id !== userId));
+    console.log(userId);
   };
 
   const handleToggleBookMark = (userId) => {
-    setUsers(
-      users.filter((user) => {
-        if (user._id === userId) {
-          user.bookmark = !user.bookmark;
-          return user;
-        }
-        return user;
-      })
-    );
+    console.log(userId);
+    // setUsers(
+    //   users.filter((user) => {
+    //     if (user._id === userId) {
+    //       user.bookmark = !user.bookmark;
+    //       return user;
+    //     }
+    //     return user;
+    //   })
+    // );
   };
 
   const handleProfessionSelect = (item) => {
