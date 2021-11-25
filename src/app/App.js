@@ -12,14 +12,14 @@ const App = () => {
   return (
     <>
       <NavBar />
-      <Switch>
-        <ProfessionProvider>
+      <ProfessionProvider>
+        <Switch>
           <Route path="/users/:userId?/:edit?" component={Users} />
           <Route path="/login/:type?" component={Login} />
-        </ProfessionProvider>
-        <Route exact path="/" component={Main} />
-        <Redirect to="/" />
-      </Switch>
+          <Route exact path="/" component={Main} />
+          <Redirect to="/" />
+        </Switch>
+      </ProfessionProvider>
       <ToastContainer />
     </>
   );

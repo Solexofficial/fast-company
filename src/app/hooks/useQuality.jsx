@@ -8,8 +8,8 @@ const QualitiesContext = React.createContext();
 export const useQualities = () => useContext(QualitiesContext);
 
 export const QualitiesProvider = ({ children }) => {
-  const [isLoading, setLoading] = useState(true);
   const [qualitiesList, setQualitiesList] = useState([]);
+  const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const getQualitiesList = async () => {
