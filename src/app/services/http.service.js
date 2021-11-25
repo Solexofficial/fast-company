@@ -18,8 +18,18 @@ axios.interceptors.request.use(
   }
 );
 
+function TransformData(data) {
+  return data ? Object.values(data) : [];
+}
+
 axios.interceptors.response.use(
-  (res) => res,
+  (res) => {
+    if (configFile.isFireBase) {
+      res.data = { content: TransformData(res.data) };
+    }
+    console.log(res.data);
+    return res;
+  },
   function (error) {
     const expectedErrors =
       error.response && error.response.status >= 400 && error.response.status < 500;
