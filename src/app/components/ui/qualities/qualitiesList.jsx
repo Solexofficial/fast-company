@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import Quality from './quality';
 import { useQualities } from '../../../hooks/useQuality';
 
-const QualitiesList = ({ qualities }) => {
-  const { qualitiesList, isLoading } = useQualities();
+const QualitiesList = ({ data }) => {
+  const { qualities, isLoading } = useQualities();
 
-  const userQualities = qualitiesList.filter((q) => qualities.includes(q._id));
+  const userQualities = qualities.filter((q) => data.includes(q._id));
 
   return !isLoading ? (
     <>
@@ -20,7 +20,7 @@ const QualitiesList = ({ qualities }) => {
 };
 
 QualitiesList.propTypes = {
-  qualities: PropTypes.array.isRequired
+  data: PropTypes.array.isRequired
 };
 
 export default QualitiesList;
