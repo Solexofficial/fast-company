@@ -8,7 +8,7 @@ const QualitiesContext = React.createContext();
 export const useQualities = () => useContext(QualitiesContext);
 
 export const QualitiesProvider = ({ children }) => {
-  const [qualitiesList, setQualitiesList] = useState([]);
+  const [qualities, setQualitiesList] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -23,7 +23,7 @@ export const QualitiesProvider = ({ children }) => {
   };
 
   const getQualityById = (id) => {
-    return qualitiesList.find((p) => p._id === id);
+    return qualities.find((p) => p._id === id);
   };
 
   useEffect(() => {
@@ -43,7 +43,7 @@ export const QualitiesProvider = ({ children }) => {
     setLoading(false);
   }
   return (
-    <QualitiesContext.Provider value={{ isLoading, qualitiesList, getQualityById }}>
+    <QualitiesContext.Provider value={{ isLoading, qualities, getQualityById }}>
       {children}
     </QualitiesContext.Provider>
   );

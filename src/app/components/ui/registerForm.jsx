@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { validator } from '../../utils/validator';
 import TextField from '../common/form/textField';
-import api from '../../api';
 import SelectField from '../common/form/selectField';
 import RadioField from '../common/form/radioField';
 import MultiSelectField from '../common/form/multiSelectField';
 import CheckBoxField from '../common/form/checkBoxField';
+import { useQualities } from '../../hooks/useQuality';
+import { useProfessions } from '../../hooks/useProfession';
 
 const RegisterForm = () => {
   const [data, setData] = useState({
@@ -17,13 +18,11 @@ const RegisterForm = () => {
     license: false
   });
   const [errors, setErrors] = useState({});
-  const [professions, setProfessions] = useState([]);
-  const [qualities, setQualities] = useState({});
 
-  useEffect(() => {
-    api.professions.fetchAll().then((data) => setProfessions(data));
-    api.qualities.fetchAll().then((data) => setQualities(data));
-  }, []);
+  const { qualities } = useQualities();
+  const qualitiesList = qualities.map((q) => ({ label: q.name, value: q._id }));
+
+  const { professions } = useProfessions();
 
   const validate = () => {
     const errors = validator(data, validatorConfig);
@@ -74,7 +73,8 @@ const RegisterForm = () => {
     e.preventDefault();
     const isValid = validate();
     if (!isValid) return;
-    console.log(data);
+    const newData = { ...data, qualities: data.qualities.map((q) => q.value) };
+    console.log(newData);
   };
 
   return (
@@ -119,7 +119,7 @@ const RegisterForm = () => {
         label="Выберите ваш пол"
       />
       <MultiSelectField
-        options={qualities}
+        options={qualitiesList}
         onChange={handleChange}
         name="qualities"
         label="Выберите ваши качества"
