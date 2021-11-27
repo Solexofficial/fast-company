@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
 import * as yup from 'yup';
+import { useAuth } from '../../hooks/useAuth';
 import CheckBoxField from '../common/form/checkBoxField';
 // import { validator } from '../../utils/validator';
 import TextField from '../common/form/textField';
 
+const initialData = { email: '', password: '', stayOn: false };
+
 const LoginForm = () => {
-  const [data, setData] = useState({ email: '', password: '', stayOn: false });
+  const history = useHistory();
+  const [data, setData] = useState(initialData);
   const [errors, setErrors] = useState({});
+  const { signIn } = useAuth();
 
   const validateScheme = yup.object().shape({
     password: yup
@@ -14,7 +20,7 @@ const LoginForm = () => {
       .required('пароль обязателен для заполнения')
       .matches(/^(?=.*[A-Z])/, 'Пароль должен содержать хотя бы одну заглавную букву')
       .matches(/(?=.*[0-9])/, 'Пароль должен содержать хотя бы одно число')
-      .matches(/(?=.*[!@#$%^&*])/, 'Пароль должен содержать один из специальных символов !@#$%^&* ')
+      // .matches(/(?=.*[!@#$%^&*])/, 'Пароль должен содержать один из специальных символов !@#$%^&* ')
       .matches(/(?=.{8})/, 'Пароль должен состоять минимум из 8 символов'),
     email: yup
       .string()
@@ -63,11 +69,16 @@ const LoginForm = () => {
     setData((prevState) => ({ ...prevState, [target.name]: target.value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const isValid = validate();
     if (!isValid) return;
-    console.log(data);
+    try {
+      await signIn(data);
+      history.push('/');
+    } catch (error) {
+      setErrors(error);
+    }
   };
 
   return (
