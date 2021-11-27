@@ -7,6 +7,8 @@ const QualitiesList = ({ data }) => {
   const { qualities, isLoading } = useQualities();
 
   const userQualities = qualities.filter((q) => data.includes(q._id));
+  console.log(data);
+  console.log(qualities);
 
   return !isLoading ? (
     <>
@@ -20,7 +22,7 @@ const QualitiesList = ({ data }) => {
 };
 
 QualitiesList.propTypes = {
-  data: PropTypes.array.isRequired
+  data: PropTypes.array
 };
 
 export default QualitiesList;

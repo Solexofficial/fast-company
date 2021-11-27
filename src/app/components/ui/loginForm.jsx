@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import * as yup from 'yup';
+import CheckBoxField from '../common/form/checkBoxField';
 // import { validator } from '../../utils/validator';
 import TextField from '../common/form/textField';
-import CheckBoxField from '../common/form/checkBoxField';
-import * as yup from 'yup';
 
 const LoginForm = () => {
+  console.log(process.env);
   const [data, setData] = useState({ email: '', password: '', stayOn: false });
   const [errors, setErrors] = useState({});
 

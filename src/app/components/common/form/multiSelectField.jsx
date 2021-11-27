@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Select from 'react-select';
 
 const MultiSelectField = ({ options, onChange, name, label, defaultValue }) => {
+  console.log(options);
   const optionsArray =
     !Array.isArray(options) && typeof options === 'object'
       ? Object.keys(options).map((optionName) => ({

@@ -14,12 +14,14 @@ const UserPage = ({ userId }) => {
   }, []);
 
   if (user) {
+    const userQualitiesList = user.qualities.map((q) => q._id);
+
     return (
       <div className="container">
         <div className="row gutters-sm">
           <div className="col-md-4 mb-3">
             <UserCard user={user} />
-            <QualitiesCard data={user.qualities} />
+            <QualitiesCard data={userQualitiesList} />
             <MeetingsCard value={user.completedMeetings} />
           </div>
 

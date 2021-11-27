@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Qualities from '../qualities';
 
 const QualitiesCard = ({ data }) => {
+  console.log(data);
   return (
     <div className="card mb-3">
       <div className="card-body d-flex flex-column justify-content-center text-center">
@@ -10,7 +11,7 @@ const QualitiesCard = ({ data }) => {
           <span>Качества</span>
         </h5>
         <p className="card-text">
-          <Qualities qualities={data} />
+          <Qualities data={data} />
         </p>
       </div>
     </div>
