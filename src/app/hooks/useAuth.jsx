@@ -39,7 +39,7 @@ const AuthProvider = ({ children }) => {
 
     try {
       const { data } = await httpAuth.post(URL, { email, password, returnSecureToken: true });
-      if (stayOn) setTokens(data);
+      setTokens(data);
     } catch (error) {
       errorCatcher(error);
       const { code, message } = error.response.data.error;
