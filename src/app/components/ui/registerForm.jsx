@@ -8,8 +8,10 @@ import CheckBoxField from '../common/form/checkBoxField';
 import { useQualities } from '../../hooks/useQuality';
 import { useProfessions } from '../../hooks/useProfession';
 import { useAuth } from '../../hooks/useAuth';
+import { useHistory } from 'react-router';
 
 const RegisterForm = () => {
+  const history = useHistory();
   const [data, setData] = useState({
     email: '',
     password: '',
@@ -72,13 +74,18 @@ const RegisterForm = () => {
     setData((prevState) => ({ ...prevState, [target.name]: target.value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const isValid = validate();
     if (!isValid) return;
     const newData = { ...data, qualities: data.qualities.map((q) => q.value) };
     console.log(newData);
-    signUp(newData);
+    try {
+      await signUp(newData);
+      history.push('/');
+    } catch (error) {
+      setErrors(error);
+    }
   };
 
   return (
