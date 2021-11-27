@@ -43,9 +43,20 @@ const AuthProvider = ({ children }) => {
     } catch (error) {
       errorCatcher(error);
       const { code, message } = error.response.data.error;
+      console.log(message);
       if (code === 400) {
+        if (message === 'USER_DISABLED') {
+          const errorObject = { email: 'Учетная запись пользователя отключена администратором.' };
+          throw errorObject;
+        }
         if (message === 'EMAIL_NOT_FOUND' || message === 'INVALID_PASSWORD') {
           const errorObject = { email: 'Неверный логин или пароль' };
+          throw errorObject;
+        }
+        if (message.includes('TOO_MANY_ATTEMPTS_TRY_LATER')) {
+          const errorObject = {
+            email: 'За последнее время мы заметили слишком много попыток входа, попробуйте позже'
+          };
           throw errorObject;
         }
       }
