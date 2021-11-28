@@ -12,20 +12,12 @@ const LoginForm = () => {
   const history = useHistory();
   const [data, setData] = useState(initialData);
   const [errors, setErrors] = useState({});
+  const [enterError, setEnterError] = useState(null);
   const { signIn } = useAuth();
 
   const validateScheme = yup.object().shape({
-    password: yup
-      .string()
-      .required('пароль обязателен для заполнения')
-      .matches(/^(?=.*[A-Z])/, 'Пароль должен содержать хотя бы одну заглавную букву')
-      .matches(/(?=.*[0-9])/, 'Пароль должен содержать хотя бы одно число')
-      // .matches(/(?=.*[!@#$%^&*])/, 'Пароль должен содержать один из специальных символов !@#$%^&* ')
-      .matches(/(?=.{8})/, 'Пароль должен состоять минимум из 8 символов'),
-    email: yup
-      .string()
-      .required('Электронная почта обязательна для заполнения')
-      .email('email введен некорректно')
+    password: yup.string().required('пароль обязателен для заполнения'),
+    email: yup.string().required('Электронная почта обязательна для заполнения')
   });
 
   const validate = () => {
@@ -67,6 +59,7 @@ const LoginForm = () => {
 
   const handleChange = (target) => {
     setData((prevState) => ({ ...prevState, [target.name]: target.value }));
+    setEnterError(null);
   };
 
   const handleSubmit = async (e) => {
@@ -77,7 +70,8 @@ const LoginForm = () => {
       await signIn(data);
       history.push('/');
     } catch (error) {
-      setErrors(error);
+      console.log(error.message);
+      setEnterError(error.message);
     }
   };
 
@@ -105,8 +99,12 @@ const LoginForm = () => {
       <CheckBoxField name="stayOn" value={data.stayOn} onChange={handleChange}>
         Оставаться в системе
       </CheckBoxField>
+      {enterError && <p className="text-danger text-center">{enterError}</p>}
 
-      <button className="btn btn-primary w-100 mx-auto" type="submit" disabled={!isValid}>
+      <button
+        className="btn btn-primary w-100 mx-auto"
+        type="submit"
+        disabled={!isValid || enterError}>
         Submit
       </button>
     </form>
