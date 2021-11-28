@@ -43,7 +43,6 @@ const AuthProvider = ({ children }) => {
     } catch (error) {
       errorCatcher(error);
       const { code, message } = error.response.data.error;
-      console.log(message);
       if (code === 400) {
         if (message === 'USER_DISABLED') {
           const errorObject = { email: 'Учетная запись пользователя отключена администратором.' };
