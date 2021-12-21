@@ -3,9 +3,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import userService from '../services/user.service';
 import { toast } from 'react-toastify';
-import { setTokens } from '../services/localStorage.service';
+import localStorageService, { setTokens } from '../services/localStorage.service';
 
-const httpAuth = axios.create({
+export const httpAuth = axios.create({
   baseURL: 'https://identitytoolkit.googleapis.com/v1/',
   params: {
     key: process.env.REACT_APP_FIREBASE_KEY
@@ -19,6 +19,10 @@ const AuthProvider = ({ children }) => {
   const [currentUser, setUser] = useState({});
   const [error, setError] = useState({});
 
+  function randomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
   async function signUp({ email, password, ...rest }) {
     try {
       const { data } = await httpAuth.post(`accounts:signUp`, {
@@ -27,7 +31,13 @@ const AuthProvider = ({ children }) => {
         returnSecureToken: true
       });
       setTokens(data);
-      await createUser({ _id: data.localId, email, ...rest });
+      await createUser({
+        _id: data.localId,
+        email,
+        rate: randomInt(1, 5),
+        completedMeetings: randomInt(0, 200),
+        ...rest
+      });
       console.log(data);
     } catch (error) {
       errorCatcher(error);
@@ -49,6 +59,7 @@ const AuthProvider = ({ children }) => {
         returnSecureToken: true
       });
       setTokens(data);
+      getUserData();
     } catch (error) {
       errorCatcher(error);
       const { code, message } = error.response.data.error;
@@ -70,12 +81,27 @@ const AuthProvider = ({ children }) => {
   async function createUser(data) {
     try {
       const { content } = await userService.create(data);
-
+      console.log(content);
       setUser(content);
     } catch (error) {
       errorCatcher(error);
     }
   }
+
+  const getUserData = async () => {
+    try {
+      const { content } = await userService.getCurrentUser();
+      setUser(content);
+    } catch (error) {
+      errorCatcher(error);
+    }
+  };
+
+  useEffect(() => {
+    if (localStorageService.getAccessToken()) {
+      getUserData();
+    }
+  }, []);
 
   useEffect(() => {
     if (error !== null) {
