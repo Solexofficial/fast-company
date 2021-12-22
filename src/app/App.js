@@ -9,6 +9,7 @@ import NavBar from './components/ui/navBar';
 import { ProfessionProvider } from './hooks/useProfession';
 import { QualitiesProvider } from './hooks/useQuality';
 import AuthProvider from './hooks/useAuth';
+import ProtectedRoute from './components/common/protectedRoute';
 
 const App = () => {
   return (
@@ -18,7 +19,7 @@ const App = () => {
         <QualitiesProvider>
           <ProfessionProvider>
             <Switch>
-              <Route path="/users/:userId?/:edit?" component={Users} />
+              <ProtectedRoute path="/users/:userId?/:edit?" component={Users} />
               <Route path="/login/:type?" component={Login} />
               <Route exact path="/" component={Main} />
               <Redirect to="/" />
