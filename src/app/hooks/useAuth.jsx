@@ -16,7 +16,7 @@ const AuthContext = React.createContext();
 export const useAuth = () => useContext(AuthContext);
 
 const AuthProvider = ({ children }) => {
-  const [currentUser, setUser] = useState({});
+  const [currentUser, setUser] = useState();
   const [error, setError] = useState({});
 
   function randomInt(min, max) {
