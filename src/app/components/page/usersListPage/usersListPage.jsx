@@ -2,6 +2,7 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import { useAuth } from '../../../hooks/useAuth';
 import { useProfessions } from '../../../hooks/useProfession';
 import { useUsers } from '../../../hooks/useUsers';
 import { paginate } from '../../../utils/paginate';
@@ -15,6 +16,8 @@ import UsersTable from '../../ui/usersTable';
 const UsersListPage = () => {
   const { users } = useUsers();
   const { professions, isLoading: professionsLoading } = useProfessions();
+
+  const { currentUser } = useAuth();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProf, setSelectedProf] = useState();
@@ -68,11 +71,16 @@ const UsersListPage = () => {
   };
 
   if (users) {
-    const filteredUsers = searchQuery
-      ? searchBy(users, searchQuery, { searchBy: 'name' })
-      : selectedProf
-      ? users.filter((user) => JSON.stringify(user.profession) === JSON.stringify(selectedProf))
-      : users;
+    function filterUsers(data) {
+      const filteredUsers = searchQuery
+        ? searchBy(data, searchQuery, { searchBy: 'name' })
+        : selectedProf
+        ? data.filter((user) => JSON.stringify(user.profession) === JSON.stringify(selectedProf))
+        : data;
+      return filteredUsers.filter((user) => user._id !== currentUser._id);
+    }
+
+    const filteredUsers = filterUsers(users);
 
     const count = filteredUsers.length;
     const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
