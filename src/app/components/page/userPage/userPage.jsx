@@ -1,17 +1,14 @@
-import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import API from '../../../api';
+import React from 'react';
+import { useUsers } from '../../../hooks/useUsers';
 import MeetingsCard from '../../ui/cards/meetingsCard';
-import UserCard from '../../ui/cards/userCard';
 import QualitiesCard from '../../ui/cards/qualitiesCard';
+import UserCard from '../../ui/cards/userCard';
 import Comments from '../../ui/comments';
 
 const UserPage = ({ userId }) => {
-  const [user, setUser] = useState();
-
-  useEffect(() => {
-    API.users.getById(userId).then((data) => setUser(data));
-  }, []);
+  const { getUserById } = useUsers();
+  const user = getUserById(userId);
 
   if (user) {
     const userQualitiesList = user.qualities.map((q) => q._id);
