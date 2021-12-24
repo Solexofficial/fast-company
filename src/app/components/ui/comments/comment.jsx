@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useAuth } from '../../../hooks/useAuth';
 import { useUsers } from '../../../hooks/useUsers';
 import formatDate from '../../../utils/formatDate';
 
 const Comment = ({ content, created_at: created, _id: id, userId, onRemove }) => {
   const { getUserById } = useUsers();
+  const { currentUser } = useAuth();
   const user = getUserById(userId);
   return (
     <div className="bg-light card-body  mb-3">
@@ -24,11 +26,13 @@ const Comment = ({ content, created_at: created, _id: id, userId, onRemove }) =>
                   <p className="mb-1 ">
                     {user.name} - <span className="small">{formatDate(created)}</span>
                   </p>
-                  <button
-                    className="btn btn-sm text-primary d-flex align-items-center"
-                    onClick={() => onRemove(id)}>
-                    <i className="bi bi-x-lg"></i>
-                  </button>
+                  {currentUser._id === userId && (
+                    <button
+                      className="btn btn-sm text-primary d-flex align-items-center"
+                      onClick={() => onRemove(id)}>
+                      <i className="bi bi-x-lg"></i>
+                    </button>
+                  )}
                 </div>
                 <p className="small mb-0">{content}</p>
               </div>
