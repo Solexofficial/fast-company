@@ -24,7 +24,6 @@ export const CommentsProvider = ({ children }) => {
   }, [userId]);
 
   async function createComment(data) {
-    console.log(data);
     const comment = {
       ...data,
       _id: nanoid(),
@@ -38,7 +37,6 @@ export const CommentsProvider = ({ children }) => {
     } catch (error) {
       errorCatcher(error);
     }
-    console.log(comment);
   }
 
   async function getComments() {
@@ -49,6 +47,17 @@ export const CommentsProvider = ({ children }) => {
       errorCatcher(error);
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function removeComment(id) {
+    try {
+      const { content } = await commentService.removeComment(id);
+      if (content === null) {
+        setComments((prevState) => prevState.filter((comment) => comment._id !== id));
+      }
+    } catch (error) {
+      errorCatcher(error);
     }
   }
 
@@ -66,7 +75,7 @@ export const CommentsProvider = ({ children }) => {
   }
 
   return (
-    <CommentsContext.Provider value={{ isLoading, comments, createComment }}>
+    <CommentsContext.Provider value={{ isLoading, comments, createComment, removeComment }}>
       {children}
     </CommentsContext.Provider>
   );

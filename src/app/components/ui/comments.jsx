@@ -4,15 +4,11 @@ import AddCommentForm from './comments/addCommentForm';
 import CommentsList from './comments/commentsList';
 
 const Comments = () => {
-  const { createComment, comments } = useComments();
+  const { removeComment, createComment, comments } = useComments();
 
-  // const handleRemoveComment = (id) => {
-  //   API.comments
-  //     .remove(id)
-  //     .then((data) =>
-  //       setComments((prevState) => prevState.filter((comment) => comment._id !== data))
-  //     );
-  // };
+  const handleRemoveComment = (id) => {
+    removeComment(id);
+  };
 
   const handleSubmit = (data) => {
     createComment(data);
@@ -22,7 +18,9 @@ const Comments = () => {
   return (
     <>
       <AddCommentForm onSubmit={handleSubmit} />
-      {sortedComments.length > 0 && <CommentsList comments={sortedComments} />}
+      {sortedComments.length > 0 && (
+        <CommentsList comments={sortedComments} onRemove={handleRemoveComment} />
+      )}
     </>
   );
 };
