@@ -1,12 +1,21 @@
 import httpService from './http.service';
 
-const qualityEndpoint = 'quality/';
+const commentEndpoint = 'comment/';
 
-const qualityService = {
-  get: async () => {
-    const { data } = await httpService.get(qualityEndpoint);
+const commentService = {
+  createComment: async (payload) => {
+    const { data } = await httpService.put(commentEndpoint + payload._id, payload);
+    return data;
+  },
+  getComments: async (pageId) => {
+    const { data } = await httpService.get(commentEndpoint, {
+      params: {
+        orderBy: '"pageId"',
+        equalTo: `"${pageId}"`
+      }
+    });
     return data;
   }
 };
 
-export default qualityService;
+export default commentService;
