@@ -1,20 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import API from '../../../api';
 import { validator } from '../../../utils/validator';
-import SelectField from '../../common/form/selectField';
 import TextAreaField from '../../common/form/textAreaField';
 
-const initialData = { content: '', userId: '' };
-
 const AddCommentForm = ({ onSubmit }) => {
-  const [data, setData] = useState(initialData);
-  const [users, setUsers] = useState({});
+  const [data, setData] = useState({});
   const [errors, setErrors] = useState({});
-
-  useEffect(() => {
-    API.users.fetchAll().then((data) => setUsers(data));
-  }, []);
 
   useEffect(() => {
     validate();
@@ -29,9 +20,6 @@ const AddCommentForm = ({ onSubmit }) => {
   const isValid = Object.keys(errors).length === 0;
 
   const validatorConfig = {
-    userId: {
-      isRequired: { message: 'Обязательно выберите пользователя' }
-    },
     content: {
       isRequired: { message: 'Поле "Сообщение" не должно быть пустым' }
     }
@@ -42,7 +30,7 @@ const AddCommentForm = ({ onSubmit }) => {
   };
 
   const clearForm = () => {
-    setData(initialData);
+    setData({});
     setErrors({});
   };
 
@@ -59,21 +47,12 @@ const AddCommentForm = ({ onSubmit }) => {
       <div className="card-body">
         <form onSubmit={handleSubmit}>
           <h2>Новый комментарий</h2>
-          <div className="mb-4">
-            <SelectField
-              options={users}
-              name="userId"
-              value={data.userId}
-              defaultOption={'Выберите пользователя'}
-              onChange={handleChange}
-              error={errors.userId}
-            />
-          </div>
+          <div className="mb-4"></div>
           <div className="mb-4">
             <TextAreaField
               label="Сообщение"
               name="content"
-              value={data.content}
+              value={data.content || ''}
               onChange={handleChange}
               error={errors.content}
             />

@@ -15,7 +15,7 @@ const QualitiesList = ({ data }) => {
       ))}
     </>
   ) : (
-    <p>Loading...</p>
+    <h2>Loading...</h2>
   );
 };
 
