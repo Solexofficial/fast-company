@@ -14,10 +14,6 @@ import TextField from '../../common/form/textField';
 const EditUserPage = () => {
   const { userId } = useParams();
   const history = useHistory();
-  const { currentUser } = useAuth();
-  if (currentUser._id !== userId) {
-    history.replace(`/users/${currentUser._id}/edit`);
-  }
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState({
     name: '',
