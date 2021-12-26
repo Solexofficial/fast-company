@@ -5,7 +5,7 @@ import { useQualities } from '../../../hooks/useQuality';
 
 const QualitiesList = ({ data }) => {
   const { qualities, isLoading } = useQualities();
-
+  if (!data) return null;
   const userQualities = qualities.filter((q) => data.includes(q._id));
 
   return !isLoading ? (

@@ -15,6 +15,10 @@ const userService = {
   getCurrentUser: async () => {
     const { data } = await httpService.get(userEndpoint + localStorageService.getUserId());
     return data;
+  },
+  updateUser: async (userId, payload) => {
+    const { data } = await httpService.patch(userEndpoint + userId, payload);
+    return data;
   }
 };
 

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CommentsProvider } from '../../../hooks/useComments';
+import { useProfessions } from '../../../hooks/useProfession';
 import { useUsers } from '../../../hooks/useUsers';
 import MeetingsCard from '../../ui/cards/meetingsCard';
 import QualitiesCard from '../../ui/cards/qualitiesCard';
@@ -9,9 +10,11 @@ import Comments from '../../ui/comments';
 
 const UserPage = ({ userId }) => {
   const { getUserById } = useUsers();
-  const user = getUserById(userId);
+  const { getProfessionById, isLoading: professionLoading } = useProfessions();
+  let user = getUserById(userId);
 
-  if (user) {
+  if (!professionLoading) {
+    user = { ...user, profession: getProfessionById(user.profession) };
     return (
       <div className="container">
         <div className="row gutters-sm">

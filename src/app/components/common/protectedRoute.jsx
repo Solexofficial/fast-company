@@ -10,6 +10,7 @@ const ProtectedRoute = ({ component: Component, children, ...rest }) => {
     <Route
       {...rest}
       render={(props) => {
+        console.log(props);
         if (!currentUser) {
           return (
             <Redirect
@@ -22,6 +23,18 @@ const ProtectedRoute = ({ component: Component, children, ...rest }) => {
             />
           );
         }
+        // if (props.match.params.userId !== currentUser._id && !!props.match.params.edit) {
+        //   return (
+        //     <Redirect
+        //       to={{
+        //         pathname: `/users/${currentUser._id}/edit`,
+        //         state: {
+        //           from: props.location
+        //         }
+        //       }}
+        //     />
+        //   );
+        // }
         return Component ? <Component {...props} /> : children;
       }}
     />
@@ -31,7 +44,10 @@ const ProtectedRoute = ({ component: Component, children, ...rest }) => {
 ProtectedRoute.propTypes = {
   component: PropTypes.func,
   children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
-  location: PropTypes.object
+  location: PropTypes.object,
+  match: PropTypes.object,
+  params: PropTypes.object,
+  userId: PropTypes.string
 };
 
 export default ProtectedRoute;

@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 
-const MultiSelectField = ({ options, onChange, name, label, defaultValue }) => {
+const MultiSelectField = ({ options, onChange, name, label, defaultValue, error }) => {
+  console.log(error);
   const optionsArray =
     !Array.isArray(options) && typeof options === 'object'
       ? Object.keys(options).map((optionName) => ({
@@ -15,19 +16,26 @@ const MultiSelectField = ({ options, onChange, name, label, defaultValue }) => {
     onChange({ name: name, value });
   };
 
+  const getInputClasses = () => {
+    return 'form-control' + (error ? ' is-invalid' : '');
+  };
+
   return (
     <div className="mb-4">
       <label className="form-label">{label}</label>
-      <Select
-        closeMenuOnSelect={false}
-        isMulti
-        defaultValue={defaultValue}
-        options={optionsArray}
-        className="basic-multi-select"
-        classNamePrefix="select"
-        onChange={handleChange}
-        name={name}
-      />
+      <div className="input-group has-validation">
+        <Select
+          closeMenuOnSelect={false}
+          isMulti
+          defaultValue={defaultValue}
+          options={optionsArray}
+          className={getInputClasses()}
+          classNamePrefix="select"
+          onChange={handleChange}
+          name={name}
+        />
+        {error && <div className="invalid-feedback">{error}</div>}
+      </div>
     </div>
   );
 };
@@ -37,7 +45,8 @@ MultiSelectField.propTypes = {
   onChange: PropTypes.func,
   name: PropTypes.string,
   label: PropTypes.string,
-  defaultValue: PropTypes.array
+  defaultValue: PropTypes.array,
+  error: PropTypes.string
 };
 
 export default MultiSelectField;
