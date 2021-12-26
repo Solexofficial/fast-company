@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
 import { useProfessions } from '../../../hooks/useProfession';
 import { useQualities } from '../../../hooks/useQuality';
-import { useUsers } from '../../../hooks/useUsers';
 import { validator } from '../../../utils/validator';
 import BackHistoryButton from '../../common/backButton';
 import MultiSelectField from '../../common/form/multiSelectField';
@@ -11,21 +10,13 @@ import RadioField from '../../common/form/radioField';
 import SelectField from '../../common/form/selectField';
 import TextField from '../../common/form/textField';
 
-const EditUserPage = () => {
-  const { userId } = useParams();
+const UserEditPage = () => {
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState({
-    name: '',
-    email: '',
-    profession: '',
-    sex: 'male',
-    qualities: []
-  });
+  const [data, setData] = useState();
   const [errors, setErrors] = useState({});
-  const { updateUser } = useAuth();
-  const { getUserById } = useUsers();
-  const { professions, isLoading: professionsLoading, getProfessionById } = useProfessions();
+  const { currentUser, updateUser } = useAuth();
+  const { professions, isLoading: professionsLoading } = useProfessions();
   const { qualities, isLoading: qualitiesLoading, getQualityById } = useQualities();
 
   const handleChange = (target) => {
@@ -37,44 +28,37 @@ const EditUserPage = () => {
   };
 
   const transformData = (data) => {
-    if (!data) return;
     return data.map((qual) => ({
       label: qual.name,
       value: qual._id
     }));
   };
 
-  const getUserData = (userId) => {
-    const user = getUserById(userId);
-    const profession = getProfessionById(user.profession);
-    const qualities = user.qualities.map((q) => getQualityById(q));
-
-    return { user, profession, qualities };
-  };
-
   useEffect(() => {
     setIsLoading(true);
     if (!qualitiesLoading && !professionsLoading) {
-      const { user, profession, qualities } = getUserData(userId);
-      setData((prevState) => ({
-        ...prevState,
-        ...user,
-        qualities: transformData(qualities),
-        profession: profession._id
-      }));
+      setData({
+        ...currentUser,
+        qualities: transformData(currentUser.qualities.map((q) => getQualityById(q)))
+      });
       setIsLoading(false);
     }
   }, [qualitiesLoading, professionsLoading]);
 
+  useEffect(() => {
+    if (data && isLoading) {
+      setIsLoading(false);
+    }
+  }, [data]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const isValid = validate();
-    console.log(isValid);
     if (!isValid) return;
 
     const { qualities } = data;
-    updateUser({ ...data, qualities: qualities ? qualities.map((q) => q.value) : [] }).then(() => {
-      history.push(`/users/${data._id}`);
+    updateUser({ ...data, qualities: qualities.map((q) => q.value) }).then(() => {
+      history.push(`/users/${currentUser._id}`);
     });
     console.log(history);
   };
@@ -153,7 +137,7 @@ const EditUserPage = () => {
                 label="Выберите ваш пол"
               />
               <MultiSelectField
-                defaultValue={data.qualities || []}
+                defaultValue={data.qualities}
                 options={transformData(qualities)}
                 onChange={handleChange}
                 values
@@ -174,4 +158,4 @@ const EditUserPage = () => {
   );
 };
 
-export default EditUserPage;
+export default UserEditPage;
