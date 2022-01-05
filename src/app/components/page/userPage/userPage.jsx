@@ -2,16 +2,15 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { CommentsProvider } from '../../../hooks/useComments';
-import { useUsers } from '../../../hooks/useUsers';
 import { getProfessionById, getProfessionsLoadingStatus } from '../../../store/professions';
+import { getUserById } from '../../../store/users';
 import MeetingsCard from '../../ui/cards/meetingsCard';
 import QualitiesCard from '../../ui/cards/qualitiesCard';
 import UserCard from '../../ui/cards/userCard';
 import Comments from '../../ui/comments';
 
 const UserPage = ({ userId }) => {
-  const { getUserById } = useUsers();
-  let user = getUserById(userId);
+  let user = useSelector(getUserById(userId));
   const userProfession = useSelector(getProfessionById(user.profession));
   const professionsLoading = useSelector(getProfessionsLoadingStatus());
 

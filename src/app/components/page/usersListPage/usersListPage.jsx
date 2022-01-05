@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useAuth } from '../../../hooks/useAuth';
-import { useUsers } from '../../../hooks/useUsers';
 import { getProfessions, getProfessionsLoadingStatus } from '../../../store/professions';
+import { getUsersList } from '../../../store/users';
 import { paginate } from '../../../utils/paginate';
 import searchBy from '../../../utils/search';
 import ListGroup from '../../common/listGroup';
@@ -15,7 +15,7 @@ import SearchStatus from '../../ui/searchStatus';
 import UsersTable from '../../ui/usersTable';
 
 const UsersListPage = () => {
-  const { users } = useUsers();
+  const users = useSelector(getUsersList());
   const professions = useSelector(getProfessions());
   const professionsLoading = useSelector(getProfessionsLoadingStatus());
 
