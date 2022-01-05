@@ -14,7 +14,7 @@ export const ProfessionProvider = ({ children }) => {
 
   const getProfessions = async () => {
     try {
-      const { content } = await professionService.get();
+      const { content } = await professionService.getAll();
       setProfessions(content);
       setLoading(false);
     } catch (error) {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
-import { useProfessions } from '../../../hooks/useProfession';
+import { getProfessions, getProfessionsLoadingStatus } from '../../../store/professions';
 import {
   getQualities,
   getQualitiesByIds,
@@ -21,7 +21,8 @@ const UserEditPage = () => {
   const [data, setData] = useState();
   const [errors, setErrors] = useState({});
   const { currentUser, updateUser } = useAuth();
-  const { professions, isLoading: professionsLoading } = useProfessions();
+  const professions = useSelector(getProfessions());
+  const professionsLoading = useSelector(getProfessionsLoadingStatus());
   const qualities = useSelector(getQualities());
   const qualitiesLoading = useSelector(getQualitiesLoadingStatus());
   const userQualities = useSelector(getQualitiesByIds(currentUser.qualities));
@@ -65,7 +66,6 @@ const UserEditPage = () => {
     updateUser({ ...data, qualities: qualities.map((q) => q.value) }).then(() => {
       history.push(`/users/${currentUser._id}`);
     });
-    console.log(history);
   };
 
   const validatorConfig = {

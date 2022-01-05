@@ -34,7 +34,6 @@ const isOutDated = (date) => Date.now() - date > TEN_MINUTES;
 export const loadQualitiesList = () => async (dispatch, getState) => {
   const { lastFetch } = getState().qualities;
   if (isOutDated(lastFetch)) {
-    console.log(lastFetch);
     dispatch(qualitiesRequested());
     try {
       const { content } = await qualityService.getAll();

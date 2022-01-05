@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { useAuth } from '../../hooks/useAuth';
-import { useProfessions } from '../../hooks/useProfession';
+import { getProfessions } from '../../store/professions';
 import { getQualities } from '../../store/qualities';
 import { validator } from '../../utils/validator';
 import CheckBoxField from '../common/form/checkBoxField';
@@ -27,7 +27,7 @@ const RegisterForm = () => {
 
   const qualitiesList = qualities.map((q) => ({ label: q.name, value: q._id }));
 
-  const { professions } = useProfessions();
+  const professions = useSelector(getProfessions());
 
   const { signUp } = useAuth();
 
