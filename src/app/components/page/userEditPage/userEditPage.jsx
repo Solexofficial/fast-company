@@ -35,13 +35,11 @@ const UserEditPage = () => {
   };
 
   useEffect(() => {
-    setIsLoading(true);
     if (!qualitiesLoading && !professionsLoading) {
       setData({
         ...currentUser,
         qualities: transformData(currentUser.qualities.map((q) => getQualityById(q)))
       });
-      setIsLoading(false);
     }
   }, [qualitiesLoading, professionsLoading]);
 
