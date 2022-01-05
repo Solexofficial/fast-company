@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { validator } from '../../utils/validator';
-import TextField from '../common/form/textField';
-import SelectField from '../common/form/selectField';
-import RadioField from '../common/form/radioField';
-import MultiSelectField from '../common/form/multiSelectField';
-import CheckBoxField from '../common/form/checkBoxField';
-import { useQualities } from '../../hooks/useQuality';
-import { useProfessions } from '../../hooks/useProfession';
-import { useAuth } from '../../hooks/useAuth';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
+import { useAuth } from '../../hooks/useAuth';
+import { useProfessions } from '../../hooks/useProfession';
+import { getQualities } from '../../store/qualities';
+import { validator } from '../../utils/validator';
+import CheckBoxField from '../common/form/checkBoxField';
+import MultiSelectField from '../common/form/multiSelectField';
+import RadioField from '../common/form/radioField';
+import SelectField from '../common/form/selectField';
+import TextField from '../common/form/textField';
 
 const RegisterForm = () => {
   const history = useHistory();
@@ -22,8 +23,8 @@ const RegisterForm = () => {
     license: false
   });
   const [errors, setErrors] = useState({});
+  const qualities = useSelector(getQualities());
 
-  const { qualities } = useQualities();
   const qualitiesList = qualities.map((q) => ({ label: q.name, value: q._id }));
 
   const { professions } = useProfessions();

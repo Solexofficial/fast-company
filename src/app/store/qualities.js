@@ -36,4 +36,13 @@ export const loadQualitiesList = () => async (dispatch) => {
   }
 };
 
+export const getQualities = () => (state) => state.qualities.entities;
+export const getQualitiesLoadingStatus = () => (state) => state.qualities.isLoading;
+export const getQualitiesByIds = (qualitiesIds) => (state) => {
+  // eslint-disable-next-line no-unused-expressions
+  return state.qualities.entities
+    ? state.qualities.entities.filter((q) => qualitiesIds.includes(q._id))
+    : [];
+};
+
 export default qualitiesReducer;

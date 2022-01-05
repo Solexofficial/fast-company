@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
 import { useProfessions } from '../../../hooks/useProfession';
 import { useQualities } from '../../../hooks/useQuality';
+import { getQualities, getQualitiesLoadingStatus } from '../../../store/qualities';
 import { validator } from '../../../utils/validator';
 import BackHistoryButton from '../../common/backButton';
 import MultiSelectField from '../../common/form/multiSelectField';
@@ -17,7 +19,9 @@ const UserEditPage = () => {
   const [errors, setErrors] = useState({});
   const { currentUser, updateUser } = useAuth();
   const { professions, isLoading: professionsLoading } = useProfessions();
-  const { qualities, isLoading: qualitiesLoading, getQualityById } = useQualities();
+  const { getQualityById } = useQualities();
+  const qualities = useSelector(getQualities());
+  const qualitiesLoading = useSelector(getQualitiesLoadingStatus());
 
   const handleChange = (target) => {
     setErrors({});
