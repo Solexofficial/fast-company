@@ -1,6 +1,8 @@
+import qualitiesReducer from './qualities';
+
 const { combineReducers, configureStore } = require('@reduxjs/toolkit');
 
-const rootReducer = combineReducers({});
+const rootReducer = combineReducers({ qualities: qualitiesReducer });
 
 export function createStore() {
   return configureStore({
