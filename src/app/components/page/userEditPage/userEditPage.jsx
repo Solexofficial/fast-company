@@ -3,8 +3,11 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
 import { useProfessions } from '../../../hooks/useProfession';
-import { useQualities } from '../../../hooks/useQuality';
-import { getQualities, getQualitiesLoadingStatus } from '../../../store/qualities';
+import {
+  getQualities,
+  getQualitiesByIds,
+  getQualitiesLoadingStatus
+} from '../../../store/qualities';
 import { validator } from '../../../utils/validator';
 import BackHistoryButton from '../../common/backButton';
 import MultiSelectField from '../../common/form/multiSelectField';
@@ -19,9 +22,9 @@ const UserEditPage = () => {
   const [errors, setErrors] = useState({});
   const { currentUser, updateUser } = useAuth();
   const { professions, isLoading: professionsLoading } = useProfessions();
-  const { getQualityById } = useQualities();
   const qualities = useSelector(getQualities());
   const qualitiesLoading = useSelector(getQualitiesLoadingStatus());
+  const userQualities = useSelector(getQualitiesByIds(currentUser.qualities));
 
   const handleChange = (target) => {
     setErrors({});
@@ -42,7 +45,7 @@ const UserEditPage = () => {
     if (!qualitiesLoading && !professionsLoading) {
       setData({
         ...currentUser,
-        qualities: transformData(currentUser.qualities.map((q) => getQualityById(q)))
+        qualities: transformData(userQualities)
       });
     }
   }, [qualitiesLoading, professionsLoading]);
