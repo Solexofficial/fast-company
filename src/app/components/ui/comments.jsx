@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { useComments } from '../../hooks/useComments';
+import { getComments, getCommentsLoadingStatus, loadCommentsList } from '../../store/comments';
 import AddCommentForm from './comments/addCommentForm';
 import CommentsList from './comments/commentsList';
 
 const Comments = () => {
-  const { removeComment, createComment, comments } = useComments();
+  const { userId } = useParams();
+  const dispatch = useDispatch();
+  const { removeComment, createComment } = useComments();
+  const isLoading = useSelector(getCommentsLoadingStatus());
+  const comments = useSelector(getComments());
+
+  useEffect(() => {
+    dispatch(loadCommentsList(userId));
+  }, [userId]);
 
   const handleRemoveComment = (id) => {
     removeComment(id);
@@ -14,12 +25,13 @@ const Comments = () => {
     createComment(data);
   };
 
-  const sortedComments = comments.sort((a, b) => b.created_at - a.created_at);
   return (
     <>
       <AddCommentForm onSubmit={handleSubmit} />
-      {sortedComments.length > 0 && (
-        <CommentsList comments={sortedComments} onRemove={handleRemoveComment} />
+      {!isLoading ? (
+        <CommentsList comments={comments} onRemove={handleRemoveComment} />
+      ) : (
+        'loading...'
       )}
     </>
   );
