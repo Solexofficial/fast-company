@@ -3,9 +3,8 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useAuth } from '../../../hooks/useAuth';
 import { getProfessions, getProfessionsLoadingStatus } from '../../../store/professions';
-import { getUsersList } from '../../../store/users';
+import { getCurrentUserId, getUsersList } from '../../../store/users';
 import { paginate } from '../../../utils/paginate';
 import searchBy from '../../../utils/search';
 import ListGroup from '../../common/listGroup';
@@ -19,7 +18,7 @@ const UsersListPage = () => {
   const professions = useSelector(getProfessions());
   const professionsLoading = useSelector(getProfessionsLoadingStatus());
 
-  const { currentUser } = useAuth();
+  const currentUserId = useSelector(getCurrentUserId());
 
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProf, setSelectedProf] = useState();
@@ -79,7 +78,7 @@ const UsersListPage = () => {
         : selectedProf
         ? data.filter((user) => JSON.stringify(user.profession) === JSON.stringify(selectedProf))
         : data;
-      return filteredUsers.filter((user) => user._id !== currentUser._id);
+      return filteredUsers.filter((user) => user._id !== currentUserId);
     }
 
     const filteredUsers = filterUsers(users);

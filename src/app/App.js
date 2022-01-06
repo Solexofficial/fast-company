@@ -1,31 +1,20 @@
-import React, { useEffect } from 'react';
-import { Switch, Route, Redirect } from 'react-router';
+import React from 'react';
+import { Redirect, Route, Switch } from 'react-router';
 import { ToastContainer } from 'react-toastify';
-
-import Login from './layouts/login';
-import Users from './layouts/users';
-import Main from './layouts/main';
+import ProtectedRoute from './components/common/protectedRoute';
+import AppLoader from './components/ui/hoc/appLoader';
 import NavBar from './components/ui/navBar';
+import AuthProvider from './hooks/useAuth';
 import { ProfessionProvider } from './hooks/useProfession';
 import { QualitiesProvider } from './hooks/useQuality';
-import AuthProvider from './hooks/useAuth';
-import ProtectedRoute from './components/common/protectedRoute';
+import Login from './layouts/login';
 import LogOut from './layouts/logOut';
-import { useDispatch } from 'react-redux';
-import { loadQualitiesList } from './store/qualities';
-import { loadProfessionsList } from './store/professions';
-import { loadUsersList } from './store/users';
+import Main from './layouts/main';
+import Users from './layouts/users';
 
 const App = () => {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(loadQualitiesList());
-    dispatch(loadProfessionsList());
-    dispatch(loadUsersList());
-  }, []);
-
   return (
-    <>
+    <AppLoader>
       <AuthProvider>
         <NavBar />
         <QualitiesProvider>
@@ -41,7 +30,7 @@ const App = () => {
         </QualitiesProvider>
       </AuthProvider>
       <ToastContainer />
-    </>
+    </AppLoader>
   );
 };
 
