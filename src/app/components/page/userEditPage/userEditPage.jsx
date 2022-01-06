@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { useAuth } from '../../../hooks/useAuth';
+import { useDispatch, useSelector } from 'react-redux';
 import { getProfessions, getProfessionsLoadingStatus } from '../../../store/professions';
 import {
   getQualities,
   getQualitiesByIds,
   getQualitiesLoadingStatus
 } from '../../../store/qualities';
-import { getCurrentUserData } from '../../../store/users';
+import { getCurrentUserData, updateUserData } from '../../../store/users';
 import { validator } from '../../../utils/validator';
 import BackHistoryButton from '../../common/backButton';
 import MultiSelectField from '../../common/form/multiSelectField';
@@ -17,17 +15,16 @@ import SelectField from '../../common/form/selectField';
 import TextField from '../../common/form/textField';
 
 const UserEditPage = () => {
-  const history = useHistory();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState();
   const [errors, setErrors] = useState({});
-  const { updateUser } = useAuth();
   const currentUser = useSelector(getCurrentUserData());
   const professions = useSelector(getProfessions());
   const professionsLoading = useSelector(getProfessionsLoadingStatus());
   const qualities = useSelector(getQualities());
   const qualitiesLoading = useSelector(getQualitiesLoadingStatus());
   const userQualities = useSelector(getQualitiesByIds(currentUser.qualities));
+  const dispatch = useDispatch();
 
   const handleChange = (target) => {
     setErrors({});
@@ -65,9 +62,7 @@ const UserEditPage = () => {
     if (!isValid) return;
 
     const { qualities } = data;
-    updateUser({ ...data, qualities: qualities.map((q) => q.value) }).then(() => {
-      history.push(`/users/${currentUser._id}`);
-    });
+    dispatch(updateUserData({ ...data, qualities: qualities.map((q) => q.value) }));
   };
 
   const validatorConfig = {
