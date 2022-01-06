@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import * as yup from 'yup';
-import { signIn } from '../../store/users';
+import { getAuthErrors, signIn } from '../../store/users';
 import CheckBoxField from '../common/form/checkBoxField';
 // import { validator } from '../../utils/validator';
 import TextField from '../common/form/textField';
@@ -13,7 +13,7 @@ const LoginForm = () => {
   const history = useHistory();
   const [data, setData] = useState(initialData);
   const [errors, setErrors] = useState({});
-  const [enterError, setEnterError] = useState(null);
+  const loginError = useSelector(getAuthErrors());
   const dispatch = useDispatch();
 
   const validateScheme = yup.object().shape({
@@ -38,7 +38,6 @@ const LoginForm = () => {
 
   const handleChange = (target) => {
     setData((prevState) => ({ ...prevState, [target.name]: target.value }));
-    setEnterError(null);
   };
 
   const handleSubmit = (e) => {
@@ -73,12 +72,12 @@ const LoginForm = () => {
       <CheckBoxField name="stayOn" value={data.stayOn} onChange={handleChange}>
         Оставаться в системе
       </CheckBoxField>
-      {enterError && <p className="text-danger text-center">{enterError}</p>}
+      {loginError && <p className="text-danger text-center">{loginError}</p>}
 
       <button
         className="btn btn-primary w-100 mx-auto"
         type="submit"
-        disabled={!isValid || enterError}>
+        disabled={!isValid || loginError}>
         Submit
       </button>
     </form>

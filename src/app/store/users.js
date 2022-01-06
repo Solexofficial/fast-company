@@ -2,6 +2,7 @@ import { createAction, createSlice } from '@reduxjs/toolkit';
 import authService from '../services/auth.service';
 import localStorageService, { setTokens } from '../services/localStorage.service';
 import userService from '../services/user.service';
+import generateAuthError from '../utils/generateAuthError';
 import getRandomInt from '../utils/getRandomInt';
 import history from '../utils/history';
 
@@ -39,6 +40,9 @@ const usersSlice = createSlice({
       state.error = action.payload;
       state.isLoading = false;
     },
+    authRequested: (state) => {
+      state.error = null;
+    },
     authRequestSuccess: (state, action) => {
       state.auth = action.payload;
       state.isLoggedIn = true;
@@ -67,6 +71,7 @@ const {
   usersRequested,
   usersReceived,
   usersRequestFailed,
+  authRequested,
   authRequestSuccess,
   authRequestFailed,
   userCreated,
@@ -74,7 +79,6 @@ const {
   userLoggedOut
 } = actions;
 
-const authRequested = createAction('users/authRequested');
 const userCreateRequested = createAction('users/userCreateRequested');
 const userCreateRequestedFailed = createAction('users/userCreateRequestedFailed');
 const userUpdateRequested = createAction('users/userUpdateRequested');
@@ -113,7 +117,13 @@ export const signIn =
       setTokens(data);
       history.push(redirect);
     } catch (error) {
-      dispatch(authRequestFailed(error.message));
+      const { code, message } = error.response.data.error;
+      if (code === 400) {
+        const errorMessage = generateAuthError(message);
+        dispatch(authRequestFailed(errorMessage));
+      } else {
+        dispatch(authRequestFailed(error.message));
+      }
     }
   };
 
@@ -174,5 +184,6 @@ export const getUserById = (userId) => (state) => {
 export const getIsLoggedIn = () => (state) => state.users.isLoggedIn;
 export const getDataStatus = () => (state) => state.users.dataLoaded;
 export const getCurrentUserId = () => (state) => state.users.auth.userId;
+export const getAuthErrors = () => (state) => state.users.error;
 
 export default usersReducer;
