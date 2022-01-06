@@ -11,7 +11,7 @@ import Comments from '../../ui/comments';
 
 const UserPage = ({ userId }) => {
   let user = useSelector(getUserById(userId));
-  const userProfession = useSelector(getProfessionById(user.profession));
+  const userProfession = useSelector(getProfessionById(user?.profession));
   const professionsLoading = useSelector(getProfessionsLoadingStatus());
 
   if (!professionsLoading) {

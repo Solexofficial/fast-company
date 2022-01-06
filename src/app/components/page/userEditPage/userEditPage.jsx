@@ -8,6 +8,7 @@ import {
   getQualitiesByIds,
   getQualitiesLoadingStatus
 } from '../../../store/qualities';
+import { getCurrentUserData } from '../../../store/users';
 import { validator } from '../../../utils/validator';
 import BackHistoryButton from '../../common/backButton';
 import MultiSelectField from '../../common/form/multiSelectField';
@@ -20,7 +21,8 @@ const UserEditPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState();
   const [errors, setErrors] = useState({});
-  const { currentUser, updateUser } = useAuth();
+  const { updateUser } = useAuth();
+  const currentUser = useSelector(getCurrentUserData());
   const professions = useSelector(getProfessions());
   const professionsLoading = useSelector(getProfessionsLoadingStatus());
   const qualities = useSelector(getQualities());

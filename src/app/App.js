@@ -14,23 +14,25 @@ import Users from './layouts/users';
 
 const App = () => {
   return (
-    <AppLoader>
-      <AuthProvider>
-        <NavBar />
-        <QualitiesProvider>
-          <ProfessionProvider>
-            <Switch>
-              <ProtectedRoute path="/users/:userId?/:edit?" component={Users} />
-              <Route path="/login/:type?" component={Login} />
-              <Route path="/logout" component={LogOut} />
-              <Route exact path="/" component={Main} />
-              <Redirect to="/" />
-            </Switch>
-          </ProfessionProvider>
-        </QualitiesProvider>
-      </AuthProvider>
+    <>
+      <AppLoader>
+        <AuthProvider>
+          <NavBar />
+          <QualitiesProvider>
+            <ProfessionProvider>
+              <Switch>
+                <ProtectedRoute path="/users/:userId?/:edit?" component={Users} />
+                <Route path="/login/:type?" component={Login} />
+                <Route path="/logout" component={LogOut} />
+                <Route exact path="/" component={Main} />
+                <Redirect to="/" />
+              </Switch>
+            </ProfessionProvider>
+          </QualitiesProvider>
+        </AuthProvider>
+      </AppLoader>
       <ToastContainer />
-    </AppLoader>
+    </>
   );
 };
 
