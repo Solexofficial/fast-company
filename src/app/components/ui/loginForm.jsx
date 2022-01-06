@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import * as yup from 'yup';
-import { useAuth } from '../../hooks/useAuth';
+import { signIn } from '../../store/users';
 import CheckBoxField from '../common/form/checkBoxField';
 // import { validator } from '../../utils/validator';
 import TextField from '../common/form/textField';
@@ -13,9 +14,7 @@ const LoginForm = () => {
   const [data, setData] = useState(initialData);
   const [errors, setErrors] = useState({});
   const [enterError, setEnterError] = useState(null);
-  const { signIn } = useAuth();
-
-  // console.log(history.location.state.from.pathname);
+  const dispatch = useDispatch();
 
   const validateScheme = yup.object().shape({
     password: yup.string().required('пароль обязателен для заполнения'),
@@ -42,17 +41,12 @@ const LoginForm = () => {
     setEnterError(null);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const isValid = validate();
     if (!isValid) return;
-    try {
-      await signIn(data);
-      history.push(history.location.state ? history.location.state.from.pathname : '/');
-    } catch (error) {
-      console.log(error.message);
-      setEnterError(error.message);
-    }
+    const redirect = history.location.state ? history.location.state.from.pathname : '/';
+    dispatch(signIn({ payload: data, redirect }));
   };
 
   return (
