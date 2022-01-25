@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import professionService from '../services/profession.service';
+import isOutDated from '../utils/isOutDated';
 
 const professionsSlice = createSlice({
   name: 'professions',
@@ -29,11 +30,8 @@ const { actions, reducer: professionsReducer } = professionsSlice;
 
 const { professionsRequested, professionsReceived, professionsRequestFailed } = actions;
 
-const TEN_MINUTES = 10 * 60 * 1000;
-const isOutDated = (date) => Date.now() - date > TEN_MINUTES;
-
 export const loadProfessionsList = () => async (dispatch, getState) => {
-  const { lastFetch } = getState().qualities;
+  const { lastFetch } = getState().professions;
   if (isOutDated(lastFetch)) {
     dispatch(professionsRequested());
     try {
@@ -47,7 +45,10 @@ export const loadProfessionsList = () => async (dispatch, getState) => {
 
 export const getProfessions = () => (state) => state.professions.entities;
 export const getProfessionsLoadingStatus = () => (state) => state.professions.isLoading;
-export const getProfessionById = (profId) => (state) =>
-  state.professions.entities ? state.professions.entities.find((prof) => prof._id === profId) : '';
+export const getProfessionById = (profId) => (state) => {
+  if (state.professions.entities) {
+    return state.professions.entities.find((prof) => prof._id === profId);
+  }
+};
 
 export default professionsReducer;

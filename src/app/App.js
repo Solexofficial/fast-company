@@ -8,6 +8,7 @@ import Login from './layouts/login';
 import LogOut from './layouts/logOut';
 import Main from './layouts/main';
 import Users from './layouts/users';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   return (

@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProfessions, getProfessionsLoadingStatus } from '../../../store/professions';
+import {
+  getProfessions,
+  getProfessionsLoadingStatus
+} from '../../../store/professions';
 import {
   getQualities,
   getQualitiesByIds,
@@ -62,7 +65,9 @@ const UserEditPage = () => {
     if (!isValid) return;
 
     const { qualities } = data;
-    dispatch(updateUserData({ ...data, qualities: qualities.map((q) => q.value) }));
+    dispatch(
+      updateUserData({ ...data, qualities: qualities.map((q) => q.value) })
+    );
   };
 
   const validatorConfig = {
@@ -147,7 +152,10 @@ const UserEditPage = () => {
                 label="Выберите ваши качества"
                 error={errors.qualities}
               />
-              <button type="submit" disabled={!isValid} className="btn btn-primary w-100 mx-auto">
+              <button
+                type="submit"
+                disabled={!isValid}
+                className="btn btn-primary w-100 mx-auto">
                 Обновить
               </button>
             </form>
