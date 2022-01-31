@@ -10,6 +10,8 @@ class TokenService {
 
     const refreshToken = jwt.sign(payload, config.get('refreshSecret'));
 
+    
+
     return {
       accessToken,
       refreshToken,
