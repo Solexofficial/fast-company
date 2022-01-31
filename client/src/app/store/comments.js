@@ -1,6 +1,5 @@
-import { createAction, createSlice, nanoid } from '@reduxjs/toolkit';
+import { createAction, createSlice } from '@reduxjs/toolkit';
 import commentService from '../services/comment.service';
-import localStorageService from '../services/localStorage.service';
 
 const commentsSlice = createSlice({
   name: 'comments',
@@ -31,37 +30,22 @@ const commentsSlice = createSlice({
 });
 
 const { actions, reducer: commentsReducer } = commentsSlice;
-const {
-  commentsRequested,
-  commentsReceived,
-  commentsRequestFailed,
-  commentCreated,
-  commentRemoved
-} = actions;
+const { commentsRequested, commentsReceived, commentsRequestFailed, commentCreated, commentRemoved } = actions;
 
 const commentCreateRequested = createAction('comments/userCreateRequested');
 const commentCreateRequestedFailed = createAction('comments/commentCreateRequestedFailed');
 const commentRemoveRequested = createAction('comments/commentRemoveRequested');
 const commentRemoveRequestedFailed = createAction('comments/commentRemoveRequestedFailed');
 
-export const createComment =
-  ({ data, pageId }) =>
-  async (dispatch) => {
-    dispatch(commentCreateRequested());
-    try {
-      const comment = {
-        ...data,
-        pageId,
-        _id: nanoid(),
-        created_at: Date.now(),
-        userId: localStorageService.getUserId()
-      };
-      const { content } = await commentService.createComment(comment);
-      dispatch(commentCreated(content));
-    } catch (error) {
-      dispatch(commentCreateRequestedFailed(error.message));
-    }
-  };
+export const createComment = (payload) => async (dispatch) => {
+  dispatch(commentCreateRequested());
+  try {
+    const { content } = await commentService.createComment(payload);
+    dispatch(commentCreated(content));
+  } catch (error) {
+    dispatch(commentCreateRequestedFailed(error.message));
+  }
+};
 
 export const removeComment = (id) => async (dispatch) => {
   dispatch(commentRemoveRequested());

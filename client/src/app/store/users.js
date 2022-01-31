@@ -3,7 +3,6 @@ import authService from '../services/auth.service';
 import localStorageService, { setTokens } from '../services/localStorage.service';
 import userService from '../services/user.service';
 import generateAuthError from '../utils/generateAuthError';
-import getRandomInt from '../utils/getRandomInt';
 import history from '../utils/history';
 
 const initialState = localStorageService.getAccessToken()
@@ -74,26 +73,12 @@ const {
   authRequested,
   authRequestSuccess,
   authRequestFailed,
-  userCreated,
   userUpdated,
   userLoggedOut
 } = actions;
 
-const userCreateRequested = createAction('users/userCreateRequested');
-const userCreateRequestedFailed = createAction('users/userCreateRequestedFailed');
 const userUpdateRequested = createAction('users/userUpdateRequested');
 const userUpdateRequestedFailed = createAction('users/userUpdateRequestedFailed');
-
-const createUser = (payload) => async (dispatch) => {
-  dispatch(userCreateRequested());
-  try {
-    const { content } = await userService.create(payload);
-    dispatch(userCreated(content));
-    history.push('/users');
-  } catch (error) {
-    dispatch(userCreateRequestedFailed());
-  }
-};
 
 export const updateUserData = (payload) => async (dispatch) => {
   dispatch(userUpdateRequested());
@@ -127,30 +112,17 @@ export const signIn =
     }
   };
 
-export const signUp =
-  ({ email, password, ...rest }) =>
-  async (dispatch) => {
-    dispatch(authRequested());
-    try {
-      const data = await authService.signUp({ email, password });
-      setTokens(data);
-      dispatch(authRequestSuccess({ userId: data.localId }));
-      dispatch(
-        createUser({
-          _id: data.localId,
-          email,
-          rate: getRandomInt(1, 5),
-          completedMeetings: getRandomInt(0, 200),
-          image: `https://avatars.dicebear.com/api/avataaars/${(Math.random() + 1)
-            .toString(36)
-            .substring(7)}.svg`,
-          ...rest
-        })
-      );
-    } catch (error) {
-      dispatch(authRequestFailed(error.message));
-    }
-  };
+export const signUp = (payload) => async (dispatch) => {
+  dispatch(authRequested());
+  try {
+    const data = await authService.signUp(payload);
+    setTokens(data);
+    dispatch(authRequestSuccess({ userId: data.userId }));
+    history.push('/users');
+  } catch (error) {
+    dispatch(authRequestFailed(error.message));
+  }
+};
 
 export const logOut = () => (dispatch) => {
   localStorageService.removeAuthData();
@@ -170,9 +142,7 @@ export const loadUsersList = () => async (dispatch, getState) => {
 
 export const getUsersList = () => (state) => state.users.entities;
 export const getCurrentUserData = () => (state) => {
-  return state.users.entities
-    ? state.users.entities.find((user) => user._id === state.users.auth.userId)
-    : null;
+  return state.users.entities ? state.users.entities.find((user) => user._id === state.users.auth.userId) : null;
 };
 
 export const getUsersLoadingStatus = () => (state) => state.users.isLoading;

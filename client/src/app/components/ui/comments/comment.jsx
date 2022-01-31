@@ -12,13 +12,7 @@ const Comment = ({ content, created_at: created, _id: id, userId, onRemove }) =>
       <div className="row">
         <div className="col">
           <div className="d-flex flex-start ">
-            <img
-              src={user.image}
-              className="rounded-circle shadow-1-strong me-3"
-              alt="avatar"
-              width="65"
-              height="65"
-            />
+            <img src={user.image} className="rounded-circle shadow-1-strong me-3" alt="avatar" width="65" height="65" />
             <div className="flex-grow-1 flex-shrink-1">
               <div className="mb-4">
                 <div className="d-flex justify-content-between align-items-center">
@@ -26,9 +20,7 @@ const Comment = ({ content, created_at: created, _id: id, userId, onRemove }) =>
                     {user.name} - <span className="small">{formatDate(created)}</span>
                   </p>
                   {currentUserId === userId && (
-                    <button
-                      className="btn btn-sm text-primary d-flex align-items-center"
-                      onClick={() => onRemove(id)}>
+                    <button className="btn btn-sm text-primary d-flex align-items-center" onClick={() => onRemove(id)}>
                       <i className="bi bi-x-lg"></i>
                     </button>
                   )}
@@ -47,7 +39,7 @@ Comment.propTypes = {
   comment: PropTypes.object,
   onRemove: PropTypes.func,
   content: PropTypes.string,
-  created_at: PropTypes.number,
+  created_at: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   _id: PropTypes.string,
   userId: PropTypes.string.isRequired
 };

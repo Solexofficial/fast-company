@@ -26,17 +26,13 @@ const Comments = () => {
   };
 
   const handleSubmit = (data) => {
-    dispatch(createComment({ data, pageId: userId }));
+    dispatch(createComment({ ...data, pageId: userId }));
   };
 
   return (
     <>
       <AddCommentForm onSubmit={handleSubmit} />
-      {!isLoading ? (
-        <CommentsList comments={comments} onRemove={handleRemoveComment} />
-      ) : (
-        'loading...'
-      )}
+      {!isLoading ? <CommentsList comments={comments} onRemove={handleRemoveComment} /> : 'loading...'}
     </>
   );
 };

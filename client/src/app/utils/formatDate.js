@@ -1,6 +1,7 @@
 import declOfNum from './declOfNum';
 
 export default function formatDate(value) {
+  value = new Date(value).getTime();
   if (typeof value === 'string') {
     value = Number(value);
   }

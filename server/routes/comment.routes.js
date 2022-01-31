@@ -19,8 +19,8 @@ router
   .post(auth, async (req, res) => {
     try {
       const newComment = await Comment.create({
+        userId: req.user._id,
         ...req.body,
-        userId: req.user_id,
       });
       res.status(201).send(newComment);
     } catch (error) {
