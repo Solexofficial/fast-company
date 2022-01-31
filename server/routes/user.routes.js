@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
+const auth = require('../middleware/auth.middleware');
 const User = require('../models/User');
 
-router.patch('/:userId', async (req, res) => {
+router.patch('/:userId', auth, async (req, res) => {
   try {
     const { userId } = req.params;
 
-    // TODO: userId === currentUserId ??
-    if (userId) {
+    if (userId === req.user._id) {
       const updatedUser = await User.findByIdAndUpdate(userId, req.body, { new: true });
       res.send(updatedUser);
     } else {
@@ -22,7 +22,7 @@ router.patch('/:userId', async (req, res) => {
   }
 });
 
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
   try {
     const list = await User.find();
     res.send(list);
