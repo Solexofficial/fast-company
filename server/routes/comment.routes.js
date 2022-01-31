@@ -30,7 +30,7 @@ router
     }
   });
 
-router.delete('/:commentId', auth, (req, res) => {
+router.delete('/:commentId', auth, async (req, res) => {
   try {
     const { commentId } = req.params;
     const removedComment = await Comment.findById(commentId);
